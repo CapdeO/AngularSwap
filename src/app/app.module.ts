@@ -4,11 +4,13 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EthCompComponent } from './components/eth-comp/eth-comp.component';
+import { TokenOneSelectorComponent } from './components/token-one-selector/token-one-selector.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    EthCompComponent
+    EthCompComponent,
+    TokenOneSelectorComponent
   ],
   imports: [
     BrowserModule,
