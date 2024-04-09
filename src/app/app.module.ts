@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { EthCompComponent } from './components/eth-comp/eth-comp.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    EthCompComponent
   ],
   imports: [
     BrowserModule,
