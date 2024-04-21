@@ -1,0 +1,73 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.connect-button {
+    button {
+        background-color: #5d3fd3;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        color: white;
+        cursor: pointer;
+        &:hover {
+            background-color: darken(#5d3fd3, 10%);
+        }
+    }
+}
+
+.swap-box {
+    background-color: #202225;
+    border-radius: 1rem;
+    padding: 2rem;
+    width: 20rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .amount-input {
+        display: flex;
+        flex-direction: column;
+
+        label {
+            color: #8a8d90;
+        }
+
+        input {
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid #8a8d90;
+            color: white;
+            font-size: 2rem;
+            padding: 0.5rem 0;
+            margin-bottom: 1rem;
+            &:focus {
+                outline: none;
+                border-bottom-color: #5865f2;
+            }
+        }
+
+        .select-token {
+            background-color: #5865f2;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+            cursor: pointer;
+            &:hover {
+                background-color: darken(#5865f2, 10%);
+            }
+        }
+    }
+
+    .swap-arrow {
+        display: flex;
+        justify-content: center;
+        margin: 1.5rem 0;
+        img {
+            width: 1.5rem;
+        }
+    }
+}

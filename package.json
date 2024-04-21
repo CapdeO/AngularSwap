@@ -1,5 +1,5 @@
 {
-  "name": "angular-tailwind",
+  "name": "angular",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -21,7 +21,6 @@
     "@angular/router": "~9.1.13",
     "ethers": "5.7.2",
     "rxjs": "~6.5.4",
-    "tailwindcss": "^1.4.6",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },
