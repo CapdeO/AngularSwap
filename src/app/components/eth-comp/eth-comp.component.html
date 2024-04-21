@@ -3,28 +3,29 @@
         Conectar
     </button>
 </div> -->
-<!-- swap.component.html -->
-<!-- <div *ngIf="!loginUser" class="connect-button">
-    <button (click)="connectToMetaMask()">Connect wallet</button>
-</div> -->
-
 
 
 <!-- <div *ngIf="loginUser"> -->
-<div *ngIf="!loginUser"  class="container">
+<!-- eth-comp.component.html -->
+<div *ngIf="!loginUser" class="container">
     <div class="swap-box">
         <div class="amount-input">
             <label>You pay</label>
             <input type="number" placeholder="0"> <!-- [(ngModel)]="payAmount" -->
-            <button class="select-token">ETH</button>
+            <button class="select-token" (click)="handleShowModalComponent()">ETH</button>  <!-- Agregar openModal() aquí -->
         </div>
         <div class="swap-arrow">
             <img src="../../../assets/arrow-down.svg">
         </div>
         <div class="amount-input">
             <label>You receive</label>
-            <input type="number" placeholder="0" > <!-- [(ngModel)]="receiveAmount" -->
-            <button class="select-token">Select token</button>
+            <input type="number" placeholder="0">
+            <button class="select-token" (click)="handleShowModalComponent()">Select token</button>  <!-- Agregar openModal() aquí -->
         </div>
     </div>
+
+  <div *ngIf="showModalComponent">
+    <app-coin-list ></app-coin-list> <!-- CoinListComponent es siempre renderizado, pero visible sólo cuando el modal está abierto -->
+</div>
+
 </div>

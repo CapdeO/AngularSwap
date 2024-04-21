@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { EthCompComponent } from './components/eth-comp/eth-comp.component';
 
 @Component({
   selector: 'app-root',
