@@ -1,113 +1,41 @@
-.modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
-
-
-.modal-content {
-  background: #202225;
-  border-radius: 8px;
-  width: 30%;
-  padding: 1em;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-  
-  .close {
-    float: right;
-    font-size: 1.5em;
-    cursor: pointer;
-  }
-  
-  // Añadir estilos específicos para los elementos dentro del modal
-}
-
-// A continuación, añade clases para estilizar los botones, la búsqueda y la lista de tokens
 .select-token {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background-color: #5865f2;
-  color: white;
-  border-radius: 15px;
-  padding: 0.5em 1em;
-  margin-right: 0.5em;
-  cursor: pointer;
-
-  &:hover {
-    background-color: darken(#5865f2, 10%);
-  }
-
-  // Iconos o imágenes dentro del botón
-  img {
-    width: 20px; // Ajusta el tamaño según el diseño
-    height: 20px;
-    margin-right: 5px;
-  }
-}
-
-// Clases para el área de búsqueda
-.search-area {
-  display: flex;
-  align-items: center;
-  background-color: #2f3136;
-  padding: 0.5em;
+  background: #2c2f36;
   border-radius: 8px;
-  margin-top: 1em;
-  
-  input {
-    border: none;
-    background-color: transparent;
-    color: white;
-    &:focus {
-      outline: none;
-    }
+  padding: 10px;
+  color: white;
+  .header {
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 10px;
   }
-  
-  button {
-    // Estilos para el botón de búsqueda, si lo hay
-  }
-}
-
-// Lista de tokens
-.token-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 1em;
-  max-height: 300px; // Ajusta según la altura deseada
-  overflow-y: auto;
-  
-  .token-item {
-    display: flex;
-    align-items: center;
-    padding: 0.5em;
-    cursor: pointer;
-    &:hover {
-      background-color: #2f3136;
+  .token-list {
+    list-style-type: none;
+    padding: 0;
+    .token-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      &:last-child {
+        border-bottom: none;
+      }
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+      }
+      .token-logo {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+        border-radius: 15px;
+      }
+      .token-name {
+        flex-grow: 1;
+      }
+      .token-symbol {
+        margin-left: auto;
+        opacity: 0.6;
+      }
     }
-    
-    img {
-      width: 20px; // Ajusta el tamaño según el diseño
-      height: 20px;
-      margin-right: 10px;
-    }
-    
-    .token-name {
-      color: white;
-    }
-  }
-}
-
-// Añade media queries para ajustar el diseño en pantallas más pequeñas
-@media (max-width: 768px) {
-  .modal-content {
-    width: 80%;
   }
 }

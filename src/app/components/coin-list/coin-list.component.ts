@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalService } from '../../../services/modal.service'; // Ajusta la ruta según sea necesario
+import { Component, Input, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-coin-list',
@@ -7,13 +6,12 @@ import { ModalService } from '../../../services/modal.service'; // Ajusta la rut
   styleUrls: ['./coin-list.component.scss'],
 })
 export class CoinListComponent {
-  display$ = this.modalService.watch();
-  showModal = true;
-
-  constructor(private modalService: ModalService) {}
-
-  handleModalVisibility() {
-    console.log('Closing modal...');
-    this.showModal = !this.showModal;
-  }
+  tokens = [
+    { name: 'Tether USD', symbol: 'USDT', logo: 'tether-logo.png' },
+    { name: 'Dai Stablecoin', symbol: 'DAI', logo: 'dai-logo.png' },
+    { name: 'Cresio', symbol: 'XCRE', logo: 'cresio-logo.png' },
+    { name: 'USD Coin (PoS)', symbol: 'USD.c', logo: 'usdc-logo.png' },
+    { name: 'USD Coin', symbol: 'USDC', logo: 'usdc-logo.png' },
+    { name: 'Binance-Peg BUSD', symbol: 'BUSD', logo: 'busd-logo.png' },
+  ];
 }

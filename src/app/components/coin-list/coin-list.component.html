@@ -1,24 +1,10 @@
-
-<!-- CoinListComponent HTML -->
-
-<div class="modal" *ngIf="showModal">
-    <div class="modal-content">
-        <button class="close" (click)="handleModalVisibility()">&times;</button>
-        <div>Contenido del modal aquí</div>
-    </div>
+<div class="select-token">
+  <div class="header">Select a token</div>
+  <ul class="token-list">
+    <li *ngFor="let token of tokens" class="token-item">
+      <img [src]="'assets/' + token.logo" [alt]="token.name" class="token-logo">
+      <span class="token-name">{{ token.name }}</span>
+      <span class="token-symbol">{{ token.symbol }}</span>
+    </li>
+  </ul>
 </div>
-
-
-<!-- Componente para renderizar la lista de monedas  -->
-
-
-<!-- <div class="modal" *ngIf="display$ | async as display" [ngClass]="{ 'show': display === 'open' }">
-  <div class="modal-content">
-    <button class="close" (click)="closeModal()">&times;</button>
-    <div>aa modal</div>
-    <div>aa modal</div>
-    <div>aa modal</div>
-    <div>aa modal</div>
-  </div>
-</div>
- -->
