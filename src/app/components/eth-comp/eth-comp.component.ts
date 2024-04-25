@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { EthAuthService } from 'src/services/eth-auth.service';
+import { SwapService, Token } from 'src/services/swap.service';
 /* import { ModalService } from 'src/services/modal.service'; */
 
 @Component({
@@ -14,14 +15,19 @@ export class EthCompComponent implements OnInit {
   loginUser: boolean = false;
   showModalComponent: boolean = false;
 
-  
+  tokenOne: Token;
+  tokenTwo: Token;
 
 
   /***********************************************************/
   constructor(
     private cdr: ChangeDetectorRef,
-    private ethereumService: EthAuthService
-  ) {}
+    private ethereumService: EthAuthService,
+    private swapService: SwapService
+  ) {
+    this.tokenOne = this.swapService.tokenOne;
+    this.tokenTwo = this.swapService.tokenTwo;
+  }
 
   ngOnInit(): void {
     this.ethereumService.loginUser.subscribe((res: boolean) => {

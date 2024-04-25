@@ -1,8 +1,8 @@
 <div class="select-token">
   <div class="header">Select a token</div>
   <ul class="token-list">
-    <li *ngFor="let token of tokens" class="token-item">
-      <img [src]="'assets/' + token.logo" [alt]="token.name" class="token-logo">
+    <li *ngFor="let token of tokens" class="token-item" (click)="handleTokenSelection(token)">
+      <img [src]="token.logo" [alt]="token.name" class="token-logo">
       <span class="token-name">{{ token.name }}</span>
       <span class="token-symbol">{{ token.symbol }}</span>
     </li>

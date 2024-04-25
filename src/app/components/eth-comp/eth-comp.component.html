@@ -1,17 +1,16 @@
-
-
 <!-- <div *ngIf="loginUser"> -->
 <!-- eth-comp.component.html -->
-<div *ngIf="!loginUser" class="container">
-   
-   <!-- ********************************** MODAL ************************************** -->
-     <div *ngIf="showModalComponent" class="modal-container">
-                <button (click)="handleShowModalComponent()">XXXXXXXXXXXXXX</button>
-                <app-coin-list></app-coin-list>
+<div class="container">
+
+    <!-- ********************************** MODAL ************************************** -->
+    <div *ngIf="showModalComponent" class="modal-container">
+        <button (click)="handleShowModalComponent()">XXXXXXXXXXXXXX</button>
+        <app-coin-list></app-coin-list>
     </div>
-  <!--   <app-coin-list ></app-coin-list> --> <!-- CoinListComponent es siempre renderizado, pero visible sólo cuando el modal está abierto -->
-      <!-- ***************************************************************************** -->
-   
+    <!--   <app-coin-list ></app-coin-list> -->
+    <!-- CoinListComponent es siempre renderizado, pero visible sólo cuando el modal está abierto -->
+    <!-- ***************************************************************************** -->
+
 
 
     <div class="swap-box">
@@ -19,9 +18,9 @@
         <div class="amount-input">
             <input type="number" placeholder="0" min="0"> <!-- [(ngModel)]="payAmount" -->
             <button class="select-token" (click)="handleShowModalComponent()">
-                <div>O--  </div>
-                 <div>ETH</div>
-            </button>  <!-- Agregar openModal() aquí -->
+                <img [src]="tokenOne.logo" alt="Token One Logo" style="height: 20px;">
+                <div>{{ tokenOne.symbol }}</div>
+            </button> <!-- Agregar openModal() aquí -->
         </div>
         <div class="swap-arrow">
             <img src="../../../assets/arrow-down.svg">
@@ -30,18 +29,24 @@
         <div class="amount-input">
             <input type="number" placeholder="0">
             <button class="select-token" (click)="handleShowModalComponent()">
-                <div>O--  </div>
-                 <div>ETH</div>
-            </button>  <!-- Agregar openModal() aquí -->
+                <img [src]="tokenTwo.logo" alt="Token One Logo" style="height: 20px;">
+                <div>{{ tokenTwo.symbol }}</div>
+            </button> <!-- Agregar openModal() aquí -->
         </div>
     </div>
 
 
     <div *ngIf="!loginUser">
-    <button (click)="connectToMetaMask()" class="bg-gray-500 px-5 py-1 rounded">
-        Conectar
-    </button>
-</div>
+        <button (click)="connectToMetaMask()" class="bg-gray-500 px-5 py-1 rounded">
+            Conectar
+        </button>
+    </div>
+
+    <div *ngIf="loginUser">
+        <button class="bg-gray-500 px-5 py-1 rounded">
+            Approbe
+        </button>
+    </div>
 
 
 </div>
