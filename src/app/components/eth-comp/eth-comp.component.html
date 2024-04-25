@@ -17,7 +17,7 @@
         <label>You pay</label>
         <div class="amount-input">
             <input type="number" placeholder="0" min="0"> <!-- [(ngModel)]="payAmount" -->
-            <button class="select-token" (click)="handleShowModalComponent()">
+            <button class="select-token" (click)="handleShowModalComponent(1)">
                 <img [src]="tokenOne.logo" alt="Token One Logo" style="height: 20px;">
                 <div>{{ tokenOne.symbol }}</div>
             </button> <!-- Agregar openModal() aquí -->
@@ -28,7 +28,7 @@
         <label>You receive</label>
         <div class="amount-input">
             <input type="number" placeholder="0">
-            <button class="select-token" (click)="handleShowModalComponent()">
+            <button class="select-token" (click)="handleShowModalComponent(2)">
                 <img [src]="tokenTwo.logo" alt="Token One Logo" style="height: 20px;">
                 <div>{{ tokenTwo.symbol }}</div>
             </button> <!-- Agregar openModal() aquí -->

@@ -11,13 +11,12 @@ import { SwapService, Token } from 'src/services/swap.service';
 export class EthCompComponent implements OnInit {
   /*  */
   /*************** Variables y estados locales ***************/
-  
+
   loginUser: boolean = false;
   showModalComponent: boolean = false;
-
+  selectedToken: number = 1
   tokenOne: Token;
   tokenTwo: Token;
-
 
   /***********************************************************/
   constructor(
@@ -25,8 +24,20 @@ export class EthCompComponent implements OnInit {
     private ethereumService: EthAuthService,
     private swapService: SwapService
   ) {
-    this.tokenOne = this.swapService.tokenOne;
-    this.tokenTwo = this.swapService.tokenTwo;
+    this.tokenOne = {
+      name: '',
+      symbol: '',
+      logo: '',
+      address: '',
+      decimals: 0
+    };
+    this.tokenTwo = {
+      name: '',
+      symbol: '',
+      logo: '',
+      address: '',
+      decimals: 0
+    };
   }
 
   ngOnInit(): void {
@@ -34,13 +45,22 @@ export class EthCompComponent implements OnInit {
       this.loginUser = res;
       this.cdr.detectChanges();
     });
+
+    this.swapService.tokenOne.subscribe(token => {
+      this.tokenOne = token;
+    });
+
+    this.swapService.tokenTwo.subscribe(token => {
+      this.tokenTwo = token;
+    });
   }
 
   async connectToMetaMask() {
     await this.ethereumService.connectToMetaMaskWallet();
   }
 
-  handleShowModalComponent() {
+  handleShowModalComponent(tokenNumber: number) {
+    this.selectedToken = tokenNumber
     console.log('opening modal');
     this.showModalComponent = !this.showModalComponent;
   }
