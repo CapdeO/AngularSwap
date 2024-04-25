@@ -1,31 +1,47 @@
-<!-- <div *ngIf="!loginUser">
-    <button (click)="connectToMetaMask()" class="bg-gray-500 px-5 py-1 rounded">
-        Conectar
-    </button>
-</div> -->
 
 
 <!-- <div *ngIf="loginUser"> -->
 <!-- eth-comp.component.html -->
 <div *ngIf="!loginUser" class="container">
+   
+   <!-- ********************************** MODAL ************************************** -->
+     <div *ngIf="showModalComponent" class="modal-container">
+                <button (click)="handleShowModalComponent()">XXXXXXXXXXXXXX</button>
+                <app-coin-list></app-coin-list>
+    </div>
+  <!--   <app-coin-list ></app-coin-list> --> <!-- CoinListComponent es siempre renderizado, pero visible sólo cuando el modal está abierto -->
+      <!-- ***************************************************************************** -->
+   
+
+
     <div class="swap-box">
+        <label>You pay</label>
         <div class="amount-input">
-            <label>You pay</label>
-            <input type="number" placeholder="0"> <!-- [(ngModel)]="payAmount" -->
-            <button class="select-token" (click)="handleShowModalComponent()">ETH</button>  <!-- Agregar openModal() aquí -->
+            <input type="number" placeholder="0" min="0"> <!-- [(ngModel)]="payAmount" -->
+            <button class="select-token" (click)="handleShowModalComponent()">
+                <div>O--  </div>
+                 <div>ETH</div>
+            </button>  <!-- Agregar openModal() aquí -->
         </div>
         <div class="swap-arrow">
             <img src="../../../assets/arrow-down.svg">
         </div>
+        <label>You receive</label>
         <div class="amount-input">
-            <label>You receive</label>
             <input type="number" placeholder="0">
-            <button class="select-token" (click)="handleShowModalComponent()">Select token</button>  <!-- Agregar openModal() aquí -->
+            <button class="select-token" (click)="handleShowModalComponent()">
+                <div>O--  </div>
+                 <div>ETH</div>
+            </button>  <!-- Agregar openModal() aquí -->
         </div>
     </div>
 
-  <div *ngIf="showModalComponent">
-    <app-coin-list ></app-coin-list> <!-- CoinListComponent es siempre renderizado, pero visible sólo cuando el modal está abierto -->
+
+    <div *ngIf="!loginUser">
+    <button (click)="connectToMetaMask()" class="bg-gray-500 px-5 py-1 rounded">
+        Conectar
+    </button>
 </div>
+
 
 </div>
