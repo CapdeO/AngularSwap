@@ -35,6 +35,8 @@ export class SwapService {
     }
   )
 
+  amountIn: BehaviorSubject<number> = new BehaviorSubject<number>(1)
+
   constructor(private ngZone: NgZone) {
 
   }

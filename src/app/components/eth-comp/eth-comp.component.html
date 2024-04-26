@@ -19,7 +19,7 @@
         <div class="swap-box-token-container">
             <label>You pay</label>
             <div class="amount-input">
-                <input type="number" placeholder="0" min="0" [(ngModel)]="topAmountOfTokens"  (ngModelChange)="logChange('topAmountOfTokens', $event)"> 
+                <input #input type="number" placeholder="0" min="0" [(ngModel)]="topAmountOfTokens"  (ngModelChange)="handleInputChange($event)"> 
                 <button class="select-token-button" (click)="handleShowModalComponent(1)">
                     <img [src]="tokenOne.logo" alt="Token One Logo" style="height: 20px;">
                     <div>{{ tokenOne.symbol }}</div>
@@ -31,7 +31,7 @@
 
 
          <!-- Botón de la flecha en la mitad -->
-        <button class="swap-arrow">
+        <button class="swap-arrow" (click)="toggleSwap()">
             <img src="../../../assets/arrow-drop-down.svg">
         </button>
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { EthAuthService } from 'src/services/eth-auth.service';
 import { SwapService, Token } from 'src/services/swap.service';
 /* import { ModalService } from 'src/services/modal.service'; */
@@ -15,12 +15,14 @@ export class EthCompComponent implements OnInit {
 
   loginUser: boolean = false;
   showModalComponent: boolean = false;
-  isSwapped = false;
+  // isSwapped = false;
   selectedToken: number = 1;
   tokenOne: Token;
   tokenTwo: Token;
-  topAmountOfTokens: number = 0; // cantidad de tokens de la parte de arriba
-  bottomAmountOfTokens: number = 0; // cantidad de tokens a recibir (de la parte de abajo)
+  topAmountOfTokens: number = 1; // cantidad de tokens de la parte de arriba
+  topAmountOfTokensOldValue: number = 1;
+  bottomAmountOfTokens: number = 1; // cantidad de tokens a recibir (de la parte de abajo)
+  @ViewChild('input', { static: false }) input;
 
   /***********************************************************/
   constructor(
@@ -71,7 +73,14 @@ export class EthCompComponent implements OnInit {
 
   // hace que los componentes de input suban o bajen al clickear el boton de la flecha en medio
   toggleSwap() {
-    this.isSwapped = !this.isSwapped;
+    // this.isSwapped = !this.isSwapped;
+
+    let currentTokenOne: Token = this.tokenOne
+    let currentTokenTwo: Token = this.tokenTwo
+
+    this.swapService.tokenOne.next(currentTokenTwo)
+    this.swapService.tokenTwo.next(currentTokenOne)
+
   }
 
   /*   logPayAmount() {
@@ -80,6 +89,31 @@ export class EthCompComponent implements OnInit {
 
   logChange(variableName: string, value: any) {
     console.log(`${variableName} changed to:`, value);
+  }
+
+  handleInputChange(newValue: any) {
+    const regex = /^\d*\.?\d*$/;
+
+    // if (regex.test(newValue) || !newValue) {
+    //   this.topAmountOfTokens = newValue;
+    //   this.topAmountOfTokensOldValue = newValue;
+    // } else {
+    //   this.input.nativeElement.value = this.topAmountOfTokensOldValue;
+    //   console.log(newValue)
+    // }
+
+    if (!regex.test(newValue)) {
+      this.input.nativeElement.value = this.topAmountOfTokensOldValue;
+      console.log('Valor inválido')
+    } else {
+
+      this.topAmountOfTokens = newValue;
+      this.topAmountOfTokensOldValue = newValue;
+      console.log('Nuevo valor del input: ', newValue)
+
+      this.swapService.amountIn.next(newValue)
+      console.log('Nuevo valor del servicio: ', this.swapService.amountIn.value)
+    }
   }
 }
 
