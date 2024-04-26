@@ -10,13 +10,17 @@ import { SwapService, Token } from 'src/services/swap.service';
 })
 export class EthCompComponent implements OnInit {
   /*  */
+
   /*************** Variables y estados locales ***************/
 
   loginUser: boolean = false;
   showModalComponent: boolean = false;
-  selectedToken: number = 1
+  isSwapped = false;
+  selectedToken: number = 1;
   tokenOne: Token;
   tokenTwo: Token;
+  topAmountOfTokens: number = 0; // cantidad de tokens de la parte de arriba
+  bottomAmountOfTokens: number = 0; // cantidad de tokens a recibir (de la parte de abajo)
 
   /***********************************************************/
   constructor(
@@ -29,14 +33,14 @@ export class EthCompComponent implements OnInit {
       symbol: '',
       logo: '',
       address: '',
-      decimals: 0
+      decimals: 0,
     };
     this.tokenTwo = {
       name: '',
       symbol: '',
       logo: '',
       address: '',
-      decimals: 0
+      decimals: 0,
     };
   }
 
@@ -46,11 +50,11 @@ export class EthCompComponent implements OnInit {
       this.cdr.detectChanges();
     });
 
-    this.swapService.tokenOne.subscribe(token => {
+    this.swapService.tokenOne.subscribe((token) => {
       this.tokenOne = token;
     });
 
-    this.swapService.tokenTwo.subscribe(token => {
+    this.swapService.tokenTwo.subscribe((token) => {
       this.tokenTwo = token;
     });
   }
@@ -60,9 +64,22 @@ export class EthCompComponent implements OnInit {
   }
 
   handleShowModalComponent(tokenNumber: number) {
-    this.selectedToken = tokenNumber
+    this.selectedToken = tokenNumber;
     console.log('opening modal');
     this.showModalComponent = !this.showModalComponent;
+  }
+
+  // hace que los componentes de input suban o bajen al clickear el boton de la flecha en medio
+  toggleSwap() {
+    this.isSwapped = !this.isSwapped;
+  }
+
+  /*   logPayAmount() {
+    console.log('payAmount', this.payAmount); // Correcto: dentro de un método.
+  } */
+
+  logChange(variableName: string, value: any) {
+    console.log(`${variableName} changed to:`, value);
   }
 }
 

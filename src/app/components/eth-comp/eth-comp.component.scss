@@ -4,6 +4,7 @@
     align-items: center;
     flex-direction: column;
     height: 100vh;
+    
 }
 
 .connect-button {
@@ -20,60 +21,144 @@
 }
 
 .swap-box {
-    background-color: #202225;
+    gap: 8px;
+    background-color: var(--background-color);
     border-radius: 1rem;
-    padding: 2rem;
-    width: 20rem;
+    padding: 0.5rem;
+    width: 26rem;
     display: flex;
+
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+
+       border-color: var(--border-color);
+        border-width: 2px;
+        border-style: solid;
+
+
+    .swap-box-center-arrow{
+    position: relative;
+    gap: 8px;
+    
+    background-color: var(--background-color);
+    border-radius: 1rem;
+    width: 26rem;
+    display: flex;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    }
+
+    .swap-box-token-container{
+        padding: 1rem;
+        background-color: var(--background-color-lighter);
+        border-radius: 10px;
+    }
+
+    label {
+            color: lightsalmon;
+            font-size: 0.8rem;
+        }
+
+     span {
+            color: lightsalmon;
+            font-size: 0.8rem;
+        }
 
     .amount-input {
         display: flex;
         flex-direction: row;
+        align-items: center;
 
 
         input {
             width: 90%;
             background-color: transparent;
             border: none;
-            border-bottom: 1px solid #8a8d90;
             color: white;
             font-size: 2rem;
             padding: 0.5rem 0;
-            margin-bottom: 1rem;
-            &:focus {
+            margin-right: 20px;
+            &:focus { 
                 outline: none;
-                border-bottom-color: #5865f2;
+            border-color: transparent;
             }
+        
         }
 
-        .select-token {
+       
+        .select-token-button {
+         border-radius: 30%;
+        border-color: var(--border-color);
+        border-width: 2px;
+        border-style: solid;
+        padding-top: 5px;
+        padding-bottom: 5px;
+            outline: none; /* Remove focus outline */
             display: flex;
-            position: relative;
-            right: 0;
+            flex-direction: row;
+            align-items: center;
+            gap: 5px;
             width: 30%;
-            height: fit-content;
-            background-color: #5865f2;
+            background-color: transparent;
             color: white;
-            padding: 0.5rem;
             border-radius: 1rem;
-            margin-top: -0rem;
             cursor: pointer;
             &:hover {
-                background-color: darken(#5865f2, 10%);
+                background-color: var(--border-color), 100%;
             }
         }
     }
 
     .swap-arrow {
+        position: absolute;
         display: flex;
-        justify-content: center;
-        margin: 1.5rem 0;
+   
+        margin-left: auto;
+        margin-right: auto;
+        width: fit-content;
+        border-radius: 30%;
+        border-color: var(--background-color);
+        border-width: 4px;
+        border-style: solid;
+        padding: 2px;
+        margin: 0;
+        cursor: pointer;
+        background: var(--background-color-lighter);
         img {
-            width: 1.5rem;
+            width: 2rem;
         }
     }
+   /*  .swap-arrow:hover{
+        background: var(--background-color-on-hover);
+    } */
+
+
+    .connect-wallet-button {
+        
+    width: 100%;  
+    padding-top: 20px;
+    padding-bottom:  20px;  /* Vertical padding, horizontal padding*/
+    border-radius: 10px; /* Rounded corners */
+    background-color: var( --orange-color-button-hover); /* Purple background */
+    color: lightsalmon; /* White text */
+    font-size: 16px; /* Size of the text */
+    font-weight: bold; /* Bold text */
+    text-align: center; /* Center text */
+    cursor: pointer; /* Hand cursor on hover */
+    border: none; /* No border */
+    outline: none; /* Remove focus outline */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    &:hover {
+                background-color: var(--orange-color-button);
+            }    
+    } 
+
+
+
 }
 
 
@@ -101,3 +186,4 @@
     z-index: -1; // Detrás del contenido del modal pero por encima de la interfaz
   }
 }
+
