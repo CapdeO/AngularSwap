@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { EthCompComponent } from './components/eth-comp/eth-comp.component';
 import { TokenOneSelectorComponent } from './components/token-one-selector/token-one-selector.component';
 import { CoinListComponent } from './components/coin-list/coin-list.component';
+import { FormsModule } from '@angular/forms'; // Importa FormsModule
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import { CoinListComponent } from './components/coin-list/coin-list.component';
     TokenOneSelectorComponent,
     CoinListComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, CommonModule],
+  imports: [BrowserModule, AppRoutingModule, CommonModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })

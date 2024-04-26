@@ -1,6 +1,45 @@
-/* You can add global styles to this file, and also import other style files */
+
+/* Add this at the top of your CSS file */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
 
 body {
-    background-color: #050505;
+    background-color: #202225;
     color: #F5F5F5;
+    font-family: 'Poppins', sans-serif; /* Set Poppins as the default font */
 }
+
+:root {
+    /* Define CSS global color variables */
+    --border-color: #E3843060;
+    --orange-color-button: #E3843080;
+    --orange-color-button-hover: #E3843030;
+
+    --background-color: #1D1B27;
+    --background-color-on-hover: #e4651b15;
+    --background-color-lighter: #252335;
+}
+
+
+/* 
+.some-element {
+    border-color: var(--border-color);
+    background: var(--background-color);
+}*/
+
+
+
+
+/* * * * * * * * * * * * Ocultar las flechas de los inputs de numero  * * * * * * * * * */
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* input[type='number'] {
+    -moz-appearance: textfield; 
+} */
+
+/* * * * * * * * * * * * * Ocultar las flechas de los inputs de numero  * * * * * * * * */

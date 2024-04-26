@@ -1,6 +1,6 @@
 <!-- <div *ngIf="loginUser"> -->
 <!-- eth-comp.component.html -->
-<div class="container">
+<section class="container">
 
     <!-- ********************************** MODAL ************************************** -->
     <div *ngIf="showModalComponent" class="modal-container">
@@ -12,41 +12,54 @@
     <!-- ***************************************************************************** -->
 
 
+    <section class="swap-box">
+        <div class="swap-box-center-arrow">
 
-    <div class="swap-box">
-        <label>You pay</label>
-        <div class="amount-input">
-            <input type="number" placeholder="0" min="0"> <!-- [(ngModel)]="payAmount" -->
-            <button class="select-token" (click)="handleShowModalComponent(1)">
-                <img [src]="tokenOne.logo" alt="Token One Logo" style="height: 20px;">
-                <div>{{ tokenOne.symbol }}</div>
-            </button> <!-- Agregar openModal() aquí -->
+        <!-- Valor de arriba -->
+        <div class="swap-box-token-container">
+            <label>You pay</label>
+            <div class="amount-input">
+                <input type="number" placeholder="0" min="0" [(ngModel)]="topAmountOfTokens"  (ngModelChange)="logChange('topAmountOfTokens', $event)"> 
+                <button class="select-token-button" (click)="handleShowModalComponent(1)">
+                    <img [src]="tokenOne.logo" alt="Token One Logo" style="height: 20px;">
+                    <div>{{ tokenOne.symbol }}</div>
+                </button>   
+            </div>
+            <span>$521,871.49</span> <!-- valor de la cantiadad de tokens en USD -->
         </div>
-        <div class="swap-arrow">
-            <img src="../../../assets/arrow-down.svg">
-        </div>
-        <label>You receive</label>
-        <div class="amount-input">
-            <input type="number" placeholder="0">
-            <button class="select-token" (click)="handleShowModalComponent(2)">
-                <img [src]="tokenTwo.logo" alt="Token One Logo" style="height: 20px;">
-                <div>{{ tokenTwo.symbol }}</div>
-            </button> <!-- Agregar openModal() aquí -->
-        </div>
-    </div>
 
 
-    <div *ngIf="!loginUser">
-        <button (click)="connectToMetaMask()" class="bg-gray-500 px-5 py-1 rounded">
-            Conectar
+
+         <!-- Botón de la flecha en la mitad -->
+        <button class="swap-arrow">
+            <img src="../../../assets/arrow-drop-down.svg">
         </button>
-    </div>
-
-    <div *ngIf="loginUser">
-        <button class="bg-gray-500 px-5 py-1 rounded">
-            Approbe
-        </button>
-    </div>
 
 
-</div>
+        
+        <!-- Token de abajo -->
+        <div class="swap-box-token-container">
+            <label>You receive</label>
+            <div class="amount-input">
+               <input type="number" placeholder="0" [(ngModel)]="bottomAmountOfTokens"  (ngModelChange)="logChange('bottomAmountOfTokens', $event)">
+                <button class="select-token-button" (click)="handleShowModalComponent(2)">
+                    <img [src]="tokenTwo.logo" alt="Token One Logo" style="height: 20px;">
+                    <div>{{ tokenTwo.symbol }}</div>
+                </button> 
+            </div>
+            <span>$521,871.49</span> <!-- valor de la cantiadad de tokens en USD -->
+        </div>
+        </div>
+
+
+            <button *ngIf="!loginUser" (click)="connectToMetaMask()" class="connect-wallet-button">
+                Conectar
+            </button>
+    
+            <button *ngIf="loginUser" class="connect-wallet-button">
+                    Aprovar
+            </button>
+    </section>
+
+
+</section>
