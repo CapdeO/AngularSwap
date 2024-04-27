@@ -19,6 +19,9 @@
     "@angular/platform-browser": "~9.1.13",
     "@angular/platform-browser-dynamic": "~9.1.13",
     "@angular/router": "~9.1.13",
+    "@uniswap/permit2-sdk": "^1.2.0",
+    "@uniswap/sdk-core": "^4.0.7",
+    "@uniswap/smart-order-router": "^3.16.23",
     "ethers": "5.7.2",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
@@ -47,5 +50,12 @@
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "typescript": "~3.8.3"
+  },
+  "browser": {
+    "fs": false,
+    "os": false,
+    "path": false,
+    "http": false,
+    "https":false
   }
 }

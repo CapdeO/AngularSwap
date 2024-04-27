@@ -56,8 +56,8 @@
                 Conectar
             </button>
     
-            <button *ngIf="loginUser" class="connect-wallet-button">
-                    Aprovar
+            <button *ngIf="loginUser" class="connect-wallet-button" (click)="handleApprove()">
+                    Aprobar
             </button>
     </section>
 

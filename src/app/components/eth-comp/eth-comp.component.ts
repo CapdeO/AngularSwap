@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { EthAuthService } from 'src/services/eth-auth.service';
-import { SwapService, Token } from 'src/services/swap.service';
+import { SwapService, TokenType } from 'src/services/swap.service';
 /* import { ModalService } from 'src/services/modal.service'; */
 
 @Component({
@@ -17,8 +17,8 @@ export class EthCompComponent implements OnInit {
   showModalComponent: boolean = false;
   // isSwapped = false;
   selectedToken: number = 1;
-  tokenOne: Token;
-  tokenTwo: Token;
+  tokenOne: TokenType;
+  tokenTwo: TokenType;
   topAmountOfTokens: number = 1; // cantidad de tokens de la parte de arriba
   topAmountOfTokensOldValue: number = 1;
   bottomAmountOfTokens: number = 1; // cantidad de tokens a recibir (de la parte de abajo)
@@ -75,12 +75,11 @@ export class EthCompComponent implements OnInit {
   toggleSwap() {
     // this.isSwapped = !this.isSwapped;
 
-    let currentTokenOne: Token = this.tokenOne
-    let currentTokenTwo: Token = this.tokenTwo
+    let currentTokenOne: TokenType = this.tokenOne
+    let currentTokenTwo: TokenType = this.tokenTwo
 
     this.swapService.tokenOne.next(currentTokenTwo)
     this.swapService.tokenTwo.next(currentTokenOne)
-
   }
 
   /*   logPayAmount() {
@@ -93,6 +92,8 @@ export class EthCompComponent implements OnInit {
 
   handleInputChange(newValue: any) {
     const regex = /^\d*\.?\d*$/;
+
+    // Se borra todo PERO SE ESCRIBEN CARÁCTERES NO PERMITIDOS !! D:
 
     // if (regex.test(newValue) || !newValue) {
     //   this.topAmountOfTokens = newValue;
@@ -115,5 +116,17 @@ export class EthCompComponent implements OnInit {
       console.log('Nuevo valor del servicio: ', this.swapService.amountIn.value)
     }
   }
+
+  async handleApprove() {
+    await this.swapService.approvePermitContract()
+      .then(async (tx) => {
+        await tx.wait()
+        alert('Aprobación completada exitosamente');
+      })
+      .catch((error) => {
+        alert(`Ocurrió un error en la aprobación: ${error.reason}`);
+      });
+  }
+
 }
 

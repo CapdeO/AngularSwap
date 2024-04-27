@@ -9,8 +9,8 @@ declare let window: any;
 })
 export class EthAuthService {
 
-  private provider: ethers.providers.Web3Provider | undefined
-  private signer: BehaviorSubject<ethers.providers.JsonRpcSigner | undefined> = new BehaviorSubject<ethers.providers.JsonRpcSigner | undefined>(undefined)
+  provider: ethers.providers.Web3Provider | undefined
+  signer: BehaviorSubject<ethers.providers.JsonRpcSigner | undefined> = new BehaviorSubject<ethers.providers.JsonRpcSigner | undefined>(undefined)
   hainIds: string[] = ['137']
   loginUser: any = new BehaviorSubject<boolean>(false)
 

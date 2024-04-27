@@ -1,5 +1,5 @@
 import { Component, Input, EventEmitter } from '@angular/core';
-import { Token } from 'src/services/swap.service';
+import { TokenType } from 'src/services/swap.service';
 import { EthCompComponent } from '../eth-comp/eth-comp.component';
 import { SwapService } from 'src/services/swap.service';
 
@@ -9,7 +9,7 @@ import { SwapService } from 'src/services/swap.service';
   styleUrls: ['./coin-list.component.scss'],
 })
 export class CoinListComponent {
-  tokens: Token[] = [
+  tokens: TokenType[] = [
     {
       name: 'Tether USD',
       symbol: 'USDT',
@@ -60,7 +60,7 @@ export class CoinListComponent {
   ) {
   }
 
-  handleTokenSelection(token: Token) {
+  handleTokenSelection(token: TokenType) {
 
     if(this.ethComp.selectedToken === 1)
       this.swapServ.tokenOne.next(token)
