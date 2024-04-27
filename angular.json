@@ -33,7 +33,27 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "@eth-optimism",
+              "brotli",
+              "await-timeout",
+              "@uniswap",
+              "@eth-optimism",
+              "async-retry",
+              "lodash",
+              "axios",
+              "graphql-request",
+              "node-cache",
+              "hash.js",
+              "js-sha3",
+              "stats-lite",
+              "bn.js",
+              "@uniswap/router-sdk",
+              "ethers",
+              "@uniswap/universal-router-sdk",
+              "@uniswap/permit2-sdk"
+            ]
           },
           "configurations": {
             "production": {

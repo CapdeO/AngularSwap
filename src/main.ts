@@ -4,9 +4,13 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
-window.Browser = {
-  T: () => {}
-};
+// window.Browser = {
+//   T: () => {}
+// };
+
+// if (typeof Browser === "undefined") {
+//   var Browser = 'chrome';
+// }
 
 if (environment.production) {
   enableProdMode();

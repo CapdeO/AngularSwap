@@ -15,10 +15,13 @@ export class EthCompComponent implements OnInit {
 
   loginUser: boolean = false;
   showModalComponent: boolean = false;
+  isApproved: boolean = false;
   // isSwapped = false;
   selectedToken: number = 1;
   tokenOne: TokenType;
   tokenTwo: TokenType;
+  tokenOneBalance: number = 0;
+  tokenTwoBalance: number = 0;
   topAmountOfTokens: number = 1; // cantidad de tokens de la parte de arriba
   topAmountOfTokensOldValue: number = 1;
   bottomAmountOfTokens: number = 1; // cantidad de tokens a recibir (de la parte de abajo)
@@ -47,17 +50,36 @@ export class EthCompComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.ethereumService.loginUser.subscribe((res: boolean) => {
+    this.ethereumService.loginUser.subscribe(async (res: boolean) => {
       this.loginUser = res;
       this.cdr.detectChanges();
+
+      if (res) {
+        await this.swapService.getTokenBalance(this.swapService.balanceTokenOne, this.swapService.tokenOne.getValue())
+        await this.swapService.getTokenBalance(this.swapService.balanceTokenTwo, this.swapService.tokenTwo.getValue())
+      }
     });
 
-    this.swapService.tokenOne.subscribe((token) => {
+    this.swapService.tokenOne.subscribe(async (token) => {
       this.tokenOne = token;
+      if (this.loginUser) {
+        await this.swapService.getTokenBalance(this.swapService.balanceTokenOne, this.swapService.tokenOne.getValue())
+      }
     });
 
-    this.swapService.tokenTwo.subscribe((token) => {
+    this.swapService.tokenTwo.subscribe(async (token) => {
       this.tokenTwo = token;
+      if (this.loginUser) {
+        await this.swapService.getTokenBalance(this.swapService.balanceTokenTwo, this.swapService.tokenTwo.getValue())
+      }
+    });
+
+    this.swapService.balanceTokenOne.subscribe((balance) => {
+      this.tokenOneBalance = balance;
+    });
+
+    this.swapService.balanceTokenTwo.subscribe((balance) => {
+      this.tokenTwoBalance = balance;
     });
   }
 
@@ -122,10 +144,33 @@ export class EthCompComponent implements OnInit {
       .then(async (tx) => {
         await tx.wait()
         alert('Aprobación completada exitosamente');
+        this.isApproved = true;
       })
       .catch((error) => {
         alert(`Ocurrió un error en la aprobación: ${error.reason}`);
       });
+  }
+
+  async handleSwap() {
+    await this.swapService.executeSwap()
+      .then(async (tx) => {
+        await tx.wait()
+        alert('Swap completado');
+        this.isApproved = false;
+      })
+      .catch((error) => {
+        alert(`Ocurrió un error en el swap: ${error.reason}`);
+      });
+  }
+
+  async handleSetMax() {
+    const tokenOneBalance = await this.swapService.getWeiTokenBalance()
+    this.topAmountOfTokens = tokenOneBalance
+    this.topAmountOfTokensOldValue = tokenOneBalance;
+    console.log('Nuevo valor del input: ', tokenOneBalance)
+
+    this.swapService.amountIn.next(tokenOneBalance)
+    console.log('Nuevo valor del servicio: ', this.swapService.amountIn.value)
   }
 
 }

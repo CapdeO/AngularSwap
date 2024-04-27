@@ -15,50 +15,65 @@
     <section class="swap-box">
         <div class="swap-box-center-arrow">
 
-        <!-- Valor de arriba -->
-        <div class="swap-box-token-container">
-            <label>You pay</label>
-            <div class="amount-input">
-                <input #input type="number" placeholder="0" min="0" [(ngModel)]="topAmountOfTokens"  (ngModelChange)="handleInputChange($event)"> 
-                <button class="select-token-button" (click)="handleShowModalComponent(1)">
-                    <img [src]="tokenOne.logo" alt="Token One Logo" style="height: 20px;">
-                    <div>{{ tokenOne.symbol }}</div>
-                </button>   
+            <!-- Valor de arriba -->
+            <div class="swap-box-token-container">
+                <label>Tu pagas</label>
+                <div class="amount-input">
+                    <input #input type="number" placeholder="0" min="0" [(ngModel)]="topAmountOfTokens"
+                        (ngModelChange)="handleInputChange($event)">
+                    <button class="select-token-button" (click)="handleShowModalComponent(1)">
+                        <img [src]="tokenOne.logo" alt="Token One Logo" style="height: 20px;">
+                        <div>{{ tokenOne.symbol }}</div>
+                    </button>
+                </div>
+                <div>
+                    <span>Balance: {{ tokenOneBalance }}</span>
+                    <button (click)="handleSetMax()">Máx</button>
+                </div>
             </div>
-            <span>$521,871.49</span> <!-- valor de la cantiadad de tokens en USD -->
+
+
+
+            <!-- Botón de la flecha en la mitad -->
+            <button class="swap-arrow" (click)="toggleSwap()">
+                <img src="../../../assets/arrow-drop-down.svg">
+            </button>
+
+
+
+            <!-- Token de abajo -->
+            <div class="swap-box-token-container">
+                <label>Recibes</label>
+                <div class="amount-input">
+                    <input type="number" placeholder="0" [(ngModel)]="bottomAmountOfTokens"
+                        (ngModelChange)="logChange('bottomAmountOfTokens', $event)" readonly>
+                    <button class="select-token-button" (click)="handleShowModalComponent(2)">
+                        <img [src]="tokenTwo.logo" alt="Token One Logo" style="height: 20px;">
+                        <div>{{ tokenTwo.symbol }}</div>
+                    </button>
+                </div>
+                <div>
+                    <span>Balance: {{ tokenTwoBalance }}</span>
+                </div>
+            </div>
         </div>
 
 
-
-         <!-- Botón de la flecha en la mitad -->
-        <button class="swap-arrow" (click)="toggleSwap()">
-            <img src="../../../assets/arrow-drop-down.svg">
+        <button *ngIf="!loginUser" (click)="connectToMetaMask()" class="connect-wallet-button">
+            Conectar
         </button>
 
+        <div *ngIf="loginUser" class="button-div">
+            <button *ngIf="!isApproved" class="connect-wallet-button" (click)="handleApprove()">
+                Aprobar
+            </button>
 
-        
-        <!-- Token de abajo -->
-        <div class="swap-box-token-container">
-            <label>You receive</label>
-            <div class="amount-input">
-               <input type="number" placeholder="0" [(ngModel)]="bottomAmountOfTokens"  (ngModelChange)="logChange('bottomAmountOfTokens', $event)">
-                <button class="select-token-button" (click)="handleShowModalComponent(2)">
-                    <img [src]="tokenTwo.logo" alt="Token One Logo" style="height: 20px;">
-                    <div>{{ tokenTwo.symbol }}</div>
-                </button> 
-            </div>
-            <span>$521,871.49</span> <!-- valor de la cantiadad de tokens en USD -->
-        </div>
+            <button *ngIf="isApproved" class="connect-wallet-button" (click)="handleSwap()">
+                Comprar
+            </button>
         </div>
 
 
-            <button *ngIf="!loginUser" (click)="connectToMetaMask()" class="connect-wallet-button">
-                Conectar
-            </button>
-    
-            <button *ngIf="loginUser" class="connect-wallet-button" (click)="handleApprove()">
-                    Aprobar
-            </button>
     </section>
 
 

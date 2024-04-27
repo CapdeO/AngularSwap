@@ -26,8 +26,8 @@ export class SwapService {
       name: 'Tether USD',
       symbol: 'USDT',
       logo: 'https://cdn.moralis.io/eth/0xdac17f958d2ee523a2206206994597c13d831ec7.png',
-      address: '0xFA3c05C2023918A4324fDE7163591Fe6BEBd1692',
-      decimals: 18
+      address: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+      decimals: 6
     }
   )
 
@@ -41,11 +41,48 @@ export class SwapService {
     }
   )
 
+  balanceTokenOne: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  balanceTokenTwo: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   amountIn: BehaviorSubject<number> = new BehaviorSubject<number>(1)
   chainId: number = 137
   uniswapRouterAddress: string = '0x643770E279d5D0733F21d6DC03A8efbABf3255B4'
 
   constructor(private ngZone: NgZone, private ethereumService: EthAuthService) {
+  }
+
+  async getWeiTokenBalance() {
+
+    const walletAddress = await this.ethereumService.signer.getValue().getAddress()
+
+    if(this.tokenOne.getValue().name === 'Matic') {
+      var maticBalance: any = await this.ethereumService.provider.getBalance(walletAddress);
+      maticBalance = utils.formatEther(maticBalance);
+      return maticBalance;
+    } else {
+      const contract = new Contract(this.tokenOne.getValue().address, erc20Abi, this.ethereumService.signer.getValue());
+      var balance = await contract.balanceOf(walletAddress);
+      balance = utils.formatUnits(balance, this.tokenOne.getValue().decimals);
+      return balance;
+    }
+  }
+
+  async getTokenBalance(token: BehaviorSubject<number>, tokenType: TokenType) {
+
+    const walletAddress = await this.ethereumService.signer.getValue().getAddress()
+
+    if(tokenType.name === 'Matic') {
+      var maticBalance: any = await this.ethereumService.provider.getBalance(walletAddress);
+      maticBalance = utils.formatEther(maticBalance)
+      maticBalance = (parseFloat(maticBalance)).toFixed(2)
+      token.next(Number(maticBalance));
+
+    } else {
+      const contract = new Contract(tokenType.address, erc20Abi, this.ethereumService.signer.getValue());
+      var balance = await contract.balanceOf(walletAddress);
+      balance = utils.formatUnits(balance, tokenType.decimals)
+      balance = (parseFloat(balance)).toFixed(2)
+      token.next(Number(balance));
+    }
   }
 
   async approvePermitContract() {
@@ -90,7 +127,7 @@ export class SwapService {
         }
       }
     );
-    console.log(`Quote Exact In: ${amountInWei}  -> ${route.quote.toExact()}`);
+    // console.log(`Quote Exact In: ${amountInWei}  -> ${route.quote.toExact()}`);
     return route;
   }
 
@@ -131,7 +168,7 @@ export class SwapService {
       walletAddress,
       this.uniswapRouterAddress
     )
-    console.log('nonce value:', nonce)
+    // console.log('nonce value:', nonce)
 
     const permit = {
       details: {
@@ -168,6 +205,9 @@ export class SwapService {
       gasPrice: route.gasPriceWei,
     };
 
+    return await this.ethereumService.signer.getValue().sendTransaction(txArguments);
 
+    // const transaction = await this.ethereumService.signer.getValue().sendTransaction(txArguments);
+    // console.log('Swap transaction hash: ', transaction.hash);
   }
 }

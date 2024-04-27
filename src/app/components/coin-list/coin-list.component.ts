@@ -11,11 +11,18 @@ import { SwapService } from 'src/services/swap.service';
 export class CoinListComponent {
   tokens: TokenType[] = [
     {
+      name: 'Matic',
+      symbol: 'MATIC',
+      logo: 'https://s3.coinmarketcap.com/static-gravity/image/b8db9a2ac5004c1685a39728cdf4e100.png',
+      address: '0x0',
+      decimals: 18
+    },
+    {
       name: 'Tether USD',
       symbol: 'USDT',
       logo: 'https://cdn.moralis.io/eth/0xdac17f958d2ee523a2206206994597c13d831ec7.png',
-      address: '0xFA3c05C2023918A4324fDE7163591Fe6BEBd1692',
-      decimals: 18
+      address: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+      decimals: 6
     },
     {
       name: 'Dai Stablecoin',
@@ -50,7 +57,7 @@ export class CoinListComponent {
       symbol: 'BUSD',
       logo: 'https://polygonscan.com/token/images/busdnew_32.png',
       address: '0x9C9e5fD8bbc25984B178FdCE6117Defa39d2db39',
-      decimals: 6
+      decimals: 18
     },
   ];
 
