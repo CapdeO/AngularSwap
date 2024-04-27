@@ -65,6 +65,12 @@ export class EthCompComponent implements OnInit {
       if (this.loginUser) {
         await this.swapService.getTokenBalance(this.swapService.balanceTokenOne, this.swapService.tokenOne.getValue())
       }
+
+      if (token.name === 'Matic') {
+        this.isApproved = true
+      } else {
+        this.isApproved = false
+      }
     });
 
     this.swapService.tokenTwo.subscribe(async (token) => {

@@ -14,7 +14,7 @@ export class CoinListComponent {
       name: 'Matic',
       symbol: 'MATIC',
       logo: 'https://s3.coinmarketcap.com/static-gravity/image/b8db9a2ac5004c1685a39728cdf4e100.png',
-      address: '0x0',
+      address: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
       decimals: 18
     },
     {
