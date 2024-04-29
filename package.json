@@ -56,6 +56,7 @@
     "os": false,
     "path": false,
     "http": false,
-    "https":false
+    "https": false,
+    "@eth-optimism/sdk": false
   }
 }

@@ -2,8 +2,8 @@ import { Injectable, NgZone } from '@angular/core';
 import { ethers, BigNumber, utils, Contract } from 'ethers';
 import { BehaviorSubject } from 'rxjs';
 import { PERMIT2_ADDRESS, AllowanceTransfer, AllowanceProvider } from '@uniswap/permit2-sdk';
-import { AlphaRouter, SwapType } from '@uniswap/smart-order-router';
-import { CurrencyAmount, TradeType, Percent, Token } from '@uniswap/sdk-core';
+import { AlphaRouter, SwapOptions, SwapType } from '@uniswap/smart-order-router';
+import { CurrencyAmount, TradeType, Percent, Token, Ether, Currency } from '@uniswap/sdk-core';
 import erc20Abi from '../utils/ERC20.json'
 import { EthAuthService } from './eth-auth.service';
 
@@ -54,7 +54,7 @@ export class SwapService {
 
     const walletAddress = await this.ethereumService.signer.getValue().getAddress()
 
-    if(this.tokenOne.getValue().name === 'Matic') {
+    if (this.tokenOne.getValue().name === 'Matic') {
       var maticBalance: any = await this.ethereumService.provider.getBalance(walletAddress);
       maticBalance = utils.formatEther(maticBalance);
       return maticBalance;
@@ -70,7 +70,7 @@ export class SwapService {
 
     const walletAddress = await this.ethereumService.signer.getValue().getAddress()
 
-    if(tokenType.name === 'Matic') {
+    if (tokenType.name === 'Matic') {
       var maticBalance: any = await this.ethereumService.provider.getBalance(walletAddress);
       maticBalance = utils.formatEther(maticBalance)
       maticBalance = (parseFloat(maticBalance)).toFixed(2)
@@ -95,14 +95,21 @@ export class SwapService {
   }
 
   async getSwapRoute(
-    sourceToken,
+    sourceToken: Token,
     destToken,
     amountInWei,
     permit,
     signature
   ) {
+
+    const isNativeTokenOne = sourceToken.name === 'Matic'
+    const isNativeTokenTwo = destToken.name === 'Matic'
+
+    const tokenA = isNativeTokenOne ? (Ether.onChain(137) as Currency) : sourceToken
+    const tokenB = isNativeTokenTwo ? (Ether.onChain(137) as Currency) : destToken
+
     const inputAmount = CurrencyAmount.fromRawAmount(
-      sourceToken,
+      tokenA,
       amountInWei.toString()
     );
 
@@ -110,22 +117,28 @@ export class SwapService {
     const router = new AlphaRouter({ chainId, provider: this.ethereumService.provider });
     const walletAddress = await this.ethereumService.signer.getValue().getAddress()
 
-    const route = await router.route(
-      inputAmount,
-      destToken,
-      TradeType.EXACT_INPUT,
-      {
-        recipient: walletAddress,
-        slippageTolerance: new Percent(5, 1000),
+    let swapOptions: SwapOptions = {
+      type: SwapType.UNIVERSAL_ROUTER,
+      recipient: walletAddress,
+      slippageTolerance: new Percent(5, 1000),
+      deadlineOrPreviousBlockhash: Math.floor(Date.now() / 1000 + 1800),
+    }
 
-        type: SwapType.UNIVERSAL_ROUTER,
-        deadlineOrPreviousBlockhash: Math.floor(Date.now() / 1000 + 1800),
-
+    if (permit) {
+      swapOptions = {
+        ...swapOptions,
         inputTokenPermit: {
           ...permit,
           signature
         }
       }
+    }
+
+    const route = await router.route(
+      inputAmount,
+      tokenB,
+      TradeType.EXACT_INPUT,
+      swapOptions
     );
     // console.log(`Quote Exact In: ${amountInWei}  -> ${route.quote.toExact()}`);
     return route;
@@ -135,7 +148,6 @@ export class SwapService {
 
     const tokenA = this.tokenOne.getValue()
     const tokenB = this.tokenTwo.getValue()
-
     const A = new Token(
       this.chainId,
       tokenA.address,
@@ -156,38 +168,39 @@ export class SwapService {
     const destToken = B
 
     const amountInWei = utils.parseUnits((this.amountIn.getValue()).toString(), tokenA.decimals)
-
     const expiry = Math.floor(Date.now() / 1000 + 1800)
-
-    const allowanceProvider = new AllowanceProvider(this.ethereumService.provider, PERMIT2_ADDRESS)
-
     const walletAddress = await this.ethereumService.signer.getValue().getAddress()
 
-    const nonce = await allowanceProvider.getNonce(
-      sourceToken.address,
-      walletAddress,
-      this.uniswapRouterAddress
-    )
-    // console.log('nonce value:', nonce)
+    var permit
+    var signature
 
-    const permit = {
-      details: {
-        token: sourceToken.address,
-        amount: amountInWei,
-        expiration: expiry,
-        nonce
-      },
-      spender: this.uniswapRouterAddress,
-      sigDeadline: expiry
+    if (tokenA.name === 'Matic') {
+
+    } else {
+      const allowanceProvider = new AllowanceProvider(this.ethereumService.provider, PERMIT2_ADDRESS)
+      const nonce = await allowanceProvider.getNonce(
+        sourceToken.address,
+        walletAddress,
+        this.uniswapRouterAddress
+      )
+      // console.log('nonce value:', nonce)
+      permit = {
+        details: {
+          token: sourceToken.address,
+          amount: amountInWei,
+          expiration: expiry,
+          nonce
+        },
+        spender: this.uniswapRouterAddress,
+        sigDeadline: expiry
+      }
+      const { domain, types, values } = AllowanceTransfer.getPermitData(
+        permit,
+        PERMIT2_ADDRESS,
+        this.chainId
+      )
+      signature = await this.ethereumService.signer.getValue()._signTypedData(domain, types, values)
     }
-
-    const { domain, types, values } = AllowanceTransfer.getPermitData(
-      permit,
-      PERMIT2_ADDRESS,
-      this.chainId
-    )
-
-    const signature = await this.ethereumService.signer.getValue()._signTypedData(domain, types, values)
 
     const route = await this.getSwapRoute(
       sourceToken,
@@ -200,7 +213,7 @@ export class SwapService {
     const txArguments = {
       data: route.methodParameters.calldata,
       to: this.uniswapRouterAddress,
-      // value: BigNumber.from(route.methodParameters.value),
+      value: BigNumber.from(route.methodParameters.value),
       from: walletAddress,
       gasPrice: route.gasPriceWei,
     };

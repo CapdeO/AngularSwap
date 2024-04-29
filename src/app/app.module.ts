@@ -4,18 +4,17 @@ import { CommonModule } from '@angular/common'; // Importa CommonModule
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EthCompComponent } from './components/eth-comp/eth-comp.component';
-import { TokenOneSelectorComponent } from './components/token-one-selector/token-one-selector.component';
 import { CoinListComponent } from './components/coin-list/coin-list.component';
 import { FormsModule } from '@angular/forms'; // Importa FormsModule
+import { HttpClientModule } from '@angular/common/http'
 
 @NgModule({
   declarations: [
     AppComponent,
     EthCompComponent,
-    TokenOneSelectorComponent,
     CoinListComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, CommonModule, FormsModule],
+  imports: [BrowserModule, AppRoutingModule, CommonModule, FormsModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
 })

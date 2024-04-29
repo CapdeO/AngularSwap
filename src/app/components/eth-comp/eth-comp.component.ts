@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { EthAuthService } from 'src/services/eth-auth.service';
 import { SwapService, TokenType } from 'src/services/swap.service';
 /* import { ModalService } from 'src/services/modal.service'; */
+import { FetchService } from 'src/services/fetch.service';
 
 @Component({
   selector: 'app-eth-comp',
@@ -24,14 +25,16 @@ export class EthCompComponent implements OnInit {
   tokenTwoBalance: number = 0;
   topAmountOfTokens: number = 1; // cantidad de tokens de la parte de arriba
   topAmountOfTokensOldValue: number = 1;
-  bottomAmountOfTokens: number = 1; // cantidad de tokens a recibir (de la parte de abajo)
+  cresioPrice: any = 0;
+  bottomAmountOfTokens: number = 0; // cantidad de tokens a recibir (de la parte de abajo)
   @ViewChild('input', { static: false }) input;
 
   /***********************************************************/
   constructor(
     private cdr: ChangeDetectorRef,
     private ethereumService: EthAuthService,
-    private swapService: SwapService
+    private swapService: SwapService,
+    private fetchService: FetchService
   ) {
     this.tokenOne = {
       name: '',
@@ -87,6 +90,15 @@ export class EthCompComponent implements OnInit {
     this.swapService.balanceTokenTwo.subscribe((balance) => {
       this.tokenTwoBalance = balance;
     });
+
+    this.fetchService.fetchPrices('0xc2132d05d31c914a87c6611c10748aeb04b58e8f', '0xFA3c05C2023918A4324fDE7163591Fe6BEBd1692').subscribe((data: any) => {
+      console.log(data)
+      this.cresioPrice = data.tokenTwo
+      this.bottomAmountOfTokens = this.topAmountOfTokens / this.cresioPrice
+    },
+    (error: any) => {
+      console.log(error)
+    })
   }
 
   async connectToMetaMask() {
@@ -142,6 +154,8 @@ export class EthCompComponent implements OnInit {
 
       this.swapService.amountIn.next(newValue)
       console.log('Nuevo valor del servicio: ', this.swapService.amountIn.value)
+
+      this.bottomAmountOfTokens = newValue / this.cresioPrice
     }
   }
 
@@ -177,7 +191,8 @@ export class EthCompComponent implements OnInit {
 
     this.swapService.amountIn.next(tokenOneBalance)
     console.log('Nuevo valor del servicio: ', this.swapService.amountIn.value)
-  }
 
+    this.bottomAmountOfTokens = this.topAmountOfTokens / this.cresioPrice
+  }
 }
 

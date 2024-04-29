@@ -4,11 +4,41 @@
     align-items: center;
     flex-direction: column;
     height: 100vh;
-    
+
+}
+
+.balance-div {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.balance-inner {
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fee-div {
+    width: 60%;
 }
 
 .button-div {
     width: 100%;
+}
+
+.max {
+    background: none;
+    border: none;
+    color: #5d3fd3;
+    font-size: 0.9rem;
+    font-weight: bold;
+
+    &:hover {
+        color: #7757f5;
+        cursor: pointer;
+    }
 }
 
 .connect-button {
@@ -18,6 +48,7 @@
         border-radius: 0.5rem;
         color: white;
         cursor: pointer;
+
         &:hover {
             background-color: darken(#5d3fd3, 10%);
         }
@@ -36,41 +67,41 @@
     justify-content: center;
     align-items: center;
 
-       border-color: var(--border-color);
-        border-width: 2px;
-        border-style: solid;
+    border-color: var(--border-color);
+    border-width: 2px;
+    border-style: solid;
 
 
-    .swap-box-center-arrow{
-    position: relative;
-    gap: 8px;
-    
-    background-color: var(--background-color);
-    border-radius: 1rem;
-    width: 26rem;
-    display: flex;
+    .swap-box-center-arrow {
+        position: relative;
+        gap: 8px;
 
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+        background-color: var(--background-color);
+        border-radius: 1rem;
+        width: 26rem;
+        display: flex;
+
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
     }
 
-    .swap-box-token-container{
+    .swap-box-token-container {
         padding: 1rem;
         background-color: var(--background-color-lighter);
         border-radius: 10px;
     }
 
     label {
-            color: lightsalmon;
-            font-size: 0.8rem;
-        }
+        color: lightsalmon;
+        font-size: 0.8rem;
+    }
 
-     span {
-            color: lightsalmon;
-            font-size: 0.8rem;
-        }
+    span {
+        color: lightsalmon;
+        font-size: 0.8rem;
+    }
 
     .amount-input {
         display: flex;
@@ -86,22 +117,24 @@
             font-size: 2rem;
             padding: 0.5rem 0;
             margin-right: 20px;
-            &:focus { 
+
+            &:focus {
                 outline: none;
-            border-color: transparent;
+                border-color: transparent;
             }
-        
+
         }
 
-       
+
         .select-token-button {
-         border-radius: 30%;
-        border-color: var(--border-color);
-        border-width: 2px;
-        border-style: solid;
-        padding-top: 5px;
-        padding-bottom: 5px;
-            outline: none; /* Remove focus outline */
+            border-radius: 30%;
+            border-color: var(--border-color);
+            border-width: 2px;
+            border-style: solid;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            outline: none;
+            /* Remove focus outline */
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -111,6 +144,7 @@
             color: white;
             border-radius: 1rem;
             cursor: pointer;
+
             &:hover {
                 background-color: var(--border-color), 100%;
             }
@@ -120,7 +154,7 @@
     .swap-arrow {
         position: absolute;
         display: flex;
-   
+
         margin-left: auto;
         margin-right: auto;
         width: fit-content;
@@ -132,34 +166,48 @@
         margin: 0;
         cursor: pointer;
         background: var(--background-color-lighter);
+
         img {
             width: 2rem;
         }
     }
-   /*  .swap-arrow:hover{
+
+    /*  .swap-arrow:hover{
         background: var(--background-color-on-hover);
     } */
 
 
     .connect-wallet-button {
-        
-    width: 100%;  
-    padding-top: 20px;
-    padding-bottom:  20px;  /* Vertical padding, horizontal padding*/
-    border-radius: 10px; /* Rounded corners */
-    background-color: var( --orange-color-button-hover); /* Purple background */
-    color: lightsalmon; /* White text */
-    font-size: 16px; /* Size of the text */
-    font-weight: bold; /* Bold text */
-    text-align: center; /* Center text */
-    cursor: pointer; /* Hand cursor on hover */
-    border: none; /* No border */
-    outline: none; /* Remove focus outline */
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-    &:hover {
-                background-color: var(--orange-color-button);
-            }    
-    } 
+
+        width: 100%;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        /* Vertical padding, horizontal padding*/
+        border-radius: 10px;
+        /* Rounded corners */
+        background-color: var(--orange-color-button-hover);
+        /* Purple background */
+        color: lightsalmon;
+        /* White text */
+        font-size: 16px;
+        /* Size of the text */
+        font-weight: bold;
+        /* Bold text */
+        text-align: center;
+        /* Center text */
+        cursor: pointer;
+        /* Hand cursor on hover */
+        border: none;
+        /* No border */
+        outline: none;
+        /* Remove focus outline */
+        transition: background-color 0.3s ease;
+
+        /* Smooth transition for hover effect */
+        &:hover {
+            background-color: var(--orange-color-button);
+        }
+    }
 
 
 
@@ -167,27 +215,26 @@
 
 
 .modal-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  position: fixed; // Posicionamiento fijo respecto al viewport
-  top: 0;
-  left: 0;
-  width: 100%; // Cubrir toda la pantalla en ancho
-  height: 100%; // Cubrir toda la pantalla en alto
-  z-index: 1000; // Alto z-index para estar por encima de otros elementos
-
-  // Fondo oscuro semitransparente
-  &:before {
-    content: '';
-    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: fixed; // Posicionamiento fijo respecto al viewport
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6); // Fondo oscuro con opacidad
-    z-index: -1; // Detrás del contenido del modal pero por encima de la interfaz
-  }
-}
+    width: 100%; // Cubrir toda la pantalla en ancho
+    height: 100%; // Cubrir toda la pantalla en alto
+    z-index: 1000; // Alto z-index para estar por encima de otros elementos
 
+    // Fondo oscuro semitransparente
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6); // Fondo oscuro con opacidad
+        z-index: -1; // Detrás del contenido del modal pero por encima de la interfaz
+    }
+}
