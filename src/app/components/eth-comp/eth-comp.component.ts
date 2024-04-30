@@ -14,7 +14,7 @@ export class EthCompComponent implements OnInit {
 
   /*************** Variables y estados locales ***************/
 
-  loginUser: boolean = false;
+  loginUser: boolean = true;
   showModalComponent: boolean = false;
   isApproved: boolean = false;
   // isSwapped = false;
@@ -23,11 +23,13 @@ export class EthCompComponent implements OnInit {
   tokenTwo: TokenType;
   tokenOneBalance: number = 0;
   tokenTwoBalance: number = 0;
-  topAmountOfTokens: number = 1; // cantidad de tokens de la parte de arriba
+  topAmountOfTokens: number | null = 1; // cantidad de tokens de la parte de arriba
   topAmountOfTokensOldValue: number = 1;
   cresioPrice: any = 0;
-  bottomAmountOfTokens: number = 0; // cantidad de tokens a recibir (de la parte de abajo)
+  bottomAmountOfTokens: number | null = 0; // cantidad de tokens a recibir (de la parte de abajo)
   @ViewChild('input', { static: false }) input;
+
+  isLoading = false; //ESTADO PARA EL BOTÓN, DEFINE SI APARECE O NO EL SPINNER
 
   /***********************************************************/
   constructor(
@@ -58,28 +60,40 @@ export class EthCompComponent implements OnInit {
       this.cdr.detectChanges();
 
       if (res) {
-        await this.swapService.getTokenBalance(this.swapService.balanceTokenOne, this.swapService.tokenOne.getValue())
-        await this.swapService.getTokenBalance(this.swapService.balanceTokenTwo, this.swapService.tokenTwo.getValue())
+        await this.swapService.getTokenBalance(
+          this.swapService.balanceTokenOne,
+          this.swapService.tokenOne.getValue()
+        );
+        await this.swapService.getTokenBalance(
+          this.swapService.balanceTokenTwo,
+          this.swapService.tokenTwo.getValue()
+        );
       }
     });
 
     this.swapService.tokenOne.subscribe(async (token) => {
       this.tokenOne = token;
       if (this.loginUser) {
-        await this.swapService.getTokenBalance(this.swapService.balanceTokenOne, this.swapService.tokenOne.getValue())
+        await this.swapService.getTokenBalance(
+          this.swapService.balanceTokenOne,
+          this.swapService.tokenOne.getValue()
+        );
       }
 
       if (token.name === 'Matic') {
-        this.isApproved = true
+        this.isApproved = true;
       } else {
-        this.isApproved = false
+        this.isApproved = false;
       }
     });
 
     this.swapService.tokenTwo.subscribe(async (token) => {
       this.tokenTwo = token;
       if (this.loginUser) {
-        await this.swapService.getTokenBalance(this.swapService.balanceTokenTwo, this.swapService.tokenTwo.getValue())
+        await this.swapService.getTokenBalance(
+          this.swapService.balanceTokenTwo,
+          this.swapService.tokenTwo.getValue()
+        );
       }
     });
 
@@ -91,14 +105,21 @@ export class EthCompComponent implements OnInit {
       this.tokenTwoBalance = balance;
     });
 
-    this.fetchService.fetchPrices('0xc2132d05d31c914a87c6611c10748aeb04b58e8f', '0xFA3c05C2023918A4324fDE7163591Fe6BEBd1692').subscribe((data: any) => {
-      console.log(data)
-      this.cresioPrice = data.tokenTwo
-      this.bottomAmountOfTokens = this.topAmountOfTokens / this.cresioPrice
-    },
-    (error: any) => {
-      console.log(error)
-    })
+    this.fetchService
+      .fetchPrices(
+        '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+        '0xFA3c05C2023918A4324fDE7163591Fe6BEBd1692'
+      )
+      .subscribe(
+        (data: any) => {
+          console.log(data);
+          this.cresioPrice = data.tokenTwo;
+          this.bottomAmountOfTokens = this.topAmountOfTokens / this.cresioPrice;
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
   }
 
   async connectToMetaMask() {
@@ -115,11 +136,11 @@ export class EthCompComponent implements OnInit {
   toggleSwap() {
     // this.isSwapped = !this.isSwapped;
 
-    let currentTokenOne: TokenType = this.tokenOne
-    let currentTokenTwo: TokenType = this.tokenTwo
+    let currentTokenOne: TokenType = this.tokenOne;
+    let currentTokenTwo: TokenType = this.tokenTwo;
 
-    this.swapService.tokenOne.next(currentTokenTwo)
-    this.swapService.tokenTwo.next(currentTokenOne)
+    this.swapService.tokenOne.next(currentTokenTwo);
+    this.swapService.tokenTwo.next(currentTokenOne);
   }
 
   /*   logPayAmount() {
@@ -145,24 +166,27 @@ export class EthCompComponent implements OnInit {
 
     if (!regex.test(newValue)) {
       this.input.nativeElement.value = this.topAmountOfTokensOldValue;
-      console.log('Valor inválido')
+      console.log('Valor inválido');
     } else {
-
       this.topAmountOfTokens = newValue;
       this.topAmountOfTokensOldValue = newValue;
-      console.log('Nuevo valor del input: ', newValue)
+      console.log('Nuevo valor del input: ', newValue);
 
-      this.swapService.amountIn.next(newValue)
-      console.log('Nuevo valor del servicio: ', this.swapService.amountIn.value)
+      this.swapService.amountIn.next(newValue);
+      console.log(
+        'Nuevo valor del servicio: ',
+        this.swapService.amountIn.value
+      );
 
-      this.bottomAmountOfTokens = newValue / this.cresioPrice
+      this.bottomAmountOfTokens = newValue / this.cresioPrice;
     }
   }
 
   async handleApprove() {
-    await this.swapService.approvePermitContract()
+    await this.swapService
+      .approvePermitContract()
       .then(async (tx) => {
-        await tx.wait()
+        await tx.wait();
         alert('Aprobación completada exitosamente');
         this.isApproved = true;
       })
@@ -172,9 +196,10 @@ export class EthCompComponent implements OnInit {
   }
 
   async handleSwap() {
-    await this.swapService.executeSwap()
+    await this.swapService
+      .executeSwap()
       .then(async (tx) => {
-        await tx.wait()
+        await tx.wait();
         alert('Swap completado');
         this.isApproved = false;
       })
@@ -184,15 +209,15 @@ export class EthCompComponent implements OnInit {
   }
 
   async handleSetMax() {
-    const tokenOneBalance = await this.swapService.getWeiTokenBalance()
-    this.topAmountOfTokens = tokenOneBalance
+    const tokenOneBalance = await this.swapService.getWeiTokenBalance();
+    this.topAmountOfTokens = tokenOneBalance;
     this.topAmountOfTokensOldValue = tokenOneBalance;
-    console.log('Nuevo valor del input: ', tokenOneBalance)
+    console.log('Nuevo valor del input: ', tokenOneBalance);
 
-    this.swapService.amountIn.next(tokenOneBalance)
-    console.log('Nuevo valor del servicio: ', this.swapService.amountIn.value)
+    this.swapService.amountIn.next(tokenOneBalance);
+    console.log('Nuevo valor del servicio: ', this.swapService.amountIn.value);
 
-    this.bottomAmountOfTokens = this.topAmountOfTokens / this.cresioPrice
+    this.bottomAmountOfTokens = this.topAmountOfTokens / this.cresioPrice;
   }
 }
 

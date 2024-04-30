@@ -31,15 +31,15 @@ body {
 
 
 /* * * * * * * * * * * * Ocultar las flechas de los inputs de numero  * * * * * * * * * */
-
+// en buenos navegadores
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-
-/* input[type='number'] {
+// en firefox
+input[type='number'] {
     -moz-appearance: textfield; 
-} */
+}
 
 /* * * * * * * * * * * * * Ocultar las flechas de los inputs de numero  * * * * * * * * */
