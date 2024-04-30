@@ -3,6 +3,7 @@ import { EthAuthService } from 'src/services/eth-auth.service';
 import { SwapService, TokenType } from 'src/services/swap.service';
 /* import { ModalService } from 'src/services/modal.service'; */
 import { FetchService } from 'src/services/fetch.service';
+import { NotificationService } from 'src/services/notification.service';
 
 @Component({
   selector: 'app-eth-comp',
@@ -29,14 +30,15 @@ export class EthCompComponent implements OnInit {
   bottomAmountOfTokens: number | null = 0; // cantidad de tokens a recibir (de la parte de abajo)
   @ViewChild('input', { static: false }) input;
 
-  isLoading = false; //ESTADO PARA EL BOTÓN, DEFINE SI APARECE O NO EL SPINNER
+  isLoading: boolean = false; //ESTADO PARA EL BOTÓN, DEFINE SI APARECE O NO EL SPINNER
 
   /***********************************************************/
   constructor(
     private cdr: ChangeDetectorRef,
     private ethereumService: EthAuthService,
     private swapService: SwapService,
-    private fetchService: FetchService
+    private fetchService: FetchService,
+    private notificationService: NotificationService
   ) {
     this.tokenOne = {
       name: '',
@@ -219,5 +221,16 @@ export class EthCompComponent implements OnInit {
 
     this.bottomAmountOfTokens = this.topAmountOfTokens / this.cresioPrice;
   }
-}
 
+  /* Notificaciones */
+
+  // Example in some component
+
+  triggerSuccess() {
+    this.notificationService.showNotification('success', 'Operación exitosa.');
+  }
+
+  triggerError() {
+    this.notificationService.showNotification('error', 'Ocurrió un error.');
+  }
+}

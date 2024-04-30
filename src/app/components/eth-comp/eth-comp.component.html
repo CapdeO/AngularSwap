@@ -60,14 +60,14 @@
                 Conectar
             </button> -->
 
-            <button *ngIf="!loginUser" (click)="connectToMetaMask()" [disabled]="isLoading" class="connect-wallet-button">
+            <button *ngIf="!loginUser" (click)="connectToMetaMask()"  class="connect-wallet-button">
             <span *ngIf="!isLoading">Conectar</span>
             <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             <span *ngIf="isLoading" class="sr-only">Loading...</span>
             </button>
 
 
-            <button *ngIf="loginUser" [disabled]="isLoading" class="connect-wallet-button">
+            <button *ngIf="!loginUser" (click)="triggerError()"  class="connect-wallet-button">
             <span *ngIf="!isLoading">Aprovar</span>
             <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             <span *ngIf="isLoading" class="sr-only">Loading...</span>
