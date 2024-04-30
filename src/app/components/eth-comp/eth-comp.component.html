@@ -13,6 +13,7 @@
 
 
     <section class="swap-box">
+        <img style="position: relative; padding-top: 1rem; padding-bottom: 1rem; left: 0px; max-width: 7rem;" src="/assets/kryzum_logo.jpg" alt="Kryzum logo">
         <div class="swap-box-center-arrow">
 
             <!-- Valor de arriba -->
@@ -65,18 +66,21 @@
             </div>
         </div>
 
-
-        <button *ngIf="!loginUser" (click)="connectToMetaMask()" class="connect-wallet-button">
-            Conectar
+<!-- (click)="connectToMetaMask()" -->
+        <button *ngIf="!loginUser"   (click)="triggerSuccess()" class="connect-wallet-button">
+             <span *ngIf="!isLoading">Conectar</span>
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         </button>
 
         <div *ngIf="loginUser" class="button-div">
-            <button *ngIf="!isApproved" class="connect-wallet-button" (click)="handleApprove()">
-                Aprobar
+            <button *ngIf="!isApproved" class="connect-wallet-button" (click)="handleApprove() ">
+                <span *ngIf="!isLoading">Aprobar</span>
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             </button>
 
             <button *ngIf="isApproved" class="connect-wallet-button" (click)="handleSwap()">
-                Comprar
+                <span *ngIf="!isLoading">Comprar</span>
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             </button>
         </div>
 
