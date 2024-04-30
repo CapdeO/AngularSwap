@@ -8,4 +8,4 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 export NODE_OPTIONS=--openssl-legacy-provider
 
-ng serve
+npx ng serve
