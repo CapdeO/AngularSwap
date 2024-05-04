@@ -55,6 +55,8 @@
     }
 }
 
+
+
 .swap-box {
     gap: 8px;
     background-color: var(--background-color);
@@ -266,4 +268,22 @@
   padding: 0;
   position: absolute;
   width: 1px;
+}
+
+
+
+//media query para mobile responsive del swap-box que cambia solo el ancho del contendedor 
+
+@media screen and (max-width: 768px) {
+    .swap-box {
+        width: 96%;
+        overflow: hidden;
+    }        
+    .swap-box-center-arrow {
+       /*  position: relative; */
+        width: 84dvw;
+    }
+    .swap-box-token-container{
+        width: 84dvw;
+    }
 }
