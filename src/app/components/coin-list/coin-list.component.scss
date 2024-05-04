@@ -1,16 +1,33 @@
 .select-token {
-  background: #2c2f36;
+  background: var(--background-color-lighter);
   border-radius: 8px;
-  padding: 10px;
+  padding-left: 16px;
+  padding-top: 12px;
+  padding-bottom: 5px;
   color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: var(--orange-color-button-hover);
+  border-width: 3px;
+  border-style: solid;
+
+  width: fit-content;
+  min-width: 300px;
+  height: 400px;
+
   .header {
     font-size: 16px;
-    text-align: center;
     margin-bottom: 10px;
   }
   .token-list {
+    overflow-y: auto;
+    overflow-x: hidden;
     list-style-type: none;
     padding: 0;
+    width: 94%;
+    height: 96%;
+
     .token-item {
       display: flex;
       align-items: center;
@@ -29,13 +46,103 @@
         margin-right: 10px;
         border-radius: 15px;
       }
-      .token-name {
-        flex-grow: 1;
+      .token-text {
+       display: flex;
+       flex-direction: column;
       }
+
+
       .token-symbol {
-        margin-left: auto;
-        opacity: 0.6;
+        font-size: 0.8rem;
+        opacity: 0.4;
       }
     }
   }
+
+
+  
+  
+.popular-tokens{
+  color: gray;
+  align-self: flex-start;
+  margin-top: 6px;
 }
+
+.header-container{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-button{
+  margin-top: -10px;
+  position: relative;
+  margin-right: 10px;
+  width: 30px; // Button size
+  height: 30px; // Button size
+  background-color: transparent; // No background
+  border: none; // No border
+  cursor: pointer; // Pointer cursor on hover
+  outline: none; // No outline
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px; // Cross line length
+    height: 2px; // Cross line thickness
+    background-color: white; // Cross color
+  }
+
+  &::before {
+    transform: translate(-50%, -50%) rotate(45deg); // First line of the "X"
+  }
+
+  &::after {
+    transform: translate(-50%, -50%) rotate(-45deg); // Second line of the "X"
+  }
+
+  &:hover {
+    &::before,
+    &::after {
+      background-color: gray; // Change color on hover
+    }
+  }
+
+}
+
+.input-text {
+  width: 88%; // Full width
+  padding: 8px 8px; // Slightly larger padding for better text alignment
+  font-size: 16px; // Clear visibility
+  background-color: var(--background-color-lighter); // Dark background
+  color: #fff; // White text
+  border: 2px solid  var(--background-color); // Slightly darker border
+  border-radius: 20px; // Rounded corners
+  outline: none; // No outline on focus
+
+  &::placeholder {
+    color: #bbb; // Lighter placeholder for contrast
+  }
+  
+  &:focus {
+    border-color:  rgb(45, 45, 48); // Slightly lighter border on focus
+  }
+}
+
+}
+
+
+/* 
+background-color: var(--orange-color-button);
+background-color: var(--orange-color-button-hover);
+background: var(--background-color-lighter);
+border-color: var(--background-color);
+background-color: var(--border-color), 100%;
+background-color: var(--background-color);
+
+ */

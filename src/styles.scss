@@ -43,3 +43,21 @@ input[type='number'] {
 }
 
 /* * * * * * * * * * * * * Ocultar las flechas de los inputs de numero  * * * * * * * * */
+
+
+/* For Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px; /* Adjust the width for vertical scrollbars */
+  height: 8px; /* Adjust the height for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent !important; /* Track color */
+
+}
+
+/* Standard CSS for Firefox */
+* {
+  scrollbar-width: thin; /* 'thin' is equivalent to about 8px in Firefox */
+  scrollbar-color: #888 transparent; /* Firefox: thumb and track colors */
+}
