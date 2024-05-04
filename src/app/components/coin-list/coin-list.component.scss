@@ -80,12 +80,12 @@
   margin-top: -10px;
   position: relative;
   margin-right: 10px;
-  width: 30px; // Button size
-  height: 30px; // Button size
-  background-color: transparent; // No background
-  border: none; // No border
-  cursor: pointer; // Pointer cursor on hover
-  outline: none; // No outline
+  width: 30px; 
+  height: 30px; 
+  background-color: transparent; 
+  border: none; 
+  cursor: pointer; 
+  outline: none; 
 
   &::before,
   &::after {
@@ -93,56 +93,47 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 20px; // Cross line length
-    height: 2px; // Cross line thickness
-    background-color: white; // Cross color
+    width: 20px;
+    height: 2px; 
+    background-color: white; 
   }
 
   &::before {
-    transform: translate(-50%, -50%) rotate(45deg); // First line of the "X"
+    transform: translate(-50%, -50%) rotate(45deg); 
   }
 
   &::after {
-    transform: translate(-50%, -50%) rotate(-45deg); // Second line of the "X"
+    transform: translate(-50%, -50%) rotate(-45deg); 
   }
 
   &:hover {
     &::before,
     &::after {
-      background-color: gray; // Change color on hover
+      background-color: gray;
     }
   }
 
 }
 
 .input-text {
-  width: 88%; // Full width
-  padding: 8px 8px; // Slightly larger padding for better text alignment
-  font-size: 16px; // Clear visibility
-  background-color: var(--background-color-lighter); // Dark background
-  color: #fff; // White text
-  border: 2px solid  var(--background-color); // Slightly darker border
-  border-radius: 20px; // Rounded corners
-  outline: none; // No outline on focus
+  width: 88%; 
+  padding: 8px 8px; 
+  font-size: 16px; 
+  background-color: var(--background-color-lighter); 
+  color: #fff; 
+  border: 2px solid  var(--background-color); 
+  border-radius: 20px; 
+  outline: none; 
 
   &::placeholder {
-    color: #bbb; // Lighter placeholder for contrast
+    color: #bbb; 
   }
   
   &:focus {
-    border-color:  rgb(45, 45, 48); // Slightly lighter border on focus
+    border-color:  rgb(45, 45, 48); 
   }
 }
 
 }
 
 
-/* 
-background-color: var(--orange-color-button);
-background-color: var(--orange-color-button-hover);
-background: var(--background-color-lighter);
-border-color: var(--background-color);
-background-color: var(--border-color), 100%;
-background-color: var(--background-color);
-
- */
