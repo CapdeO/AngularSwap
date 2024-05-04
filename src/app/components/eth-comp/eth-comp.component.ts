@@ -132,6 +132,11 @@ export class EthCompComponent implements OnInit {
     this.showModalComponent = !this.showModalComponent;
   }
 
+  //closes the modal
+  handleCloseModalComponent() {
+    this.showModalComponent = !this.showModalComponent;
+  }
+
   // hace que los componentes de input suban o bajen al clickear el boton de la flecha en medio
   toggleSwap() {
     // this.isSwapped = !this.isSwapped;
@@ -219,8 +224,6 @@ export class EthCompComponent implements OnInit {
 
     this.bottomAmountOfTokens = this.topAmountOfTokens / this.cresioPrice;
   }
-
-
 
   /* Notificaciones */
   triggerSuccess() {

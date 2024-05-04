@@ -1,16 +1,33 @@
 .select-token {
-  background: #2c2f36;
+  background: var(--background-color-lighter);
   border-radius: 8px;
-  padding: 10px;
+  padding-left: 16px;
+  padding-top: 12px;
+  padding-bottom: 5px;
   color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: var(--orange-color-button-hover);
+  border-width: 3px;
+  border-style: solid;
+
+  width: fit-content;
+  min-width: 300px;
+  height: 400px;
+
   .header {
     font-size: 16px;
-    text-align: center;
     margin-bottom: 10px;
   }
   .token-list {
+    overflow-y: auto;
+    overflow-x: hidden;
     list-style-type: none;
     padding: 0;
+    width: 94%;
+    height: 96%;
+
     .token-item {
       display: flex;
       align-items: center;
@@ -29,13 +46,94 @@
         margin-right: 10px;
         border-radius: 15px;
       }
-      .token-name {
-        flex-grow: 1;
+      .token-text {
+       display: flex;
+       flex-direction: column;
       }
+
+
       .token-symbol {
-        margin-left: auto;
-        opacity: 0.6;
+        font-size: 0.8rem;
+        opacity: 0.4;
       }
     }
   }
+
+
+  
+  
+.popular-tokens{
+  color: gray;
+  align-self: flex-start;
+  margin-top: 6px;
 }
+
+.header-container{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-button{
+  margin-top: -10px;
+  position: relative;
+  margin-right: 10px;
+  width: 30px; 
+  height: 30px; 
+  background-color: transparent; 
+  border: none; 
+  cursor: pointer; 
+  outline: none; 
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 2px; 
+    background-color: white; 
+  }
+
+  &::before {
+    transform: translate(-50%, -50%) rotate(45deg); 
+  }
+
+  &::after {
+    transform: translate(-50%, -50%) rotate(-45deg); 
+  }
+
+  &:hover {
+    &::before,
+    &::after {
+      background-color: gray;
+    }
+  }
+
+}
+
+.input-text {
+  width: 88%; 
+  padding: 8px 8px; 
+  font-size: 16px; 
+  background-color: var(--background-color-lighter); 
+  color: #fff; 
+  border: 2px solid  var(--background-color); 
+  border-radius: 20px; 
+  outline: none; 
+
+  &::placeholder {
+    color: #bbb; 
+  }
+  
+  &:focus {
+    border-color:  rgb(45, 45, 48); 
+  }
+}
+
+}
+
+
