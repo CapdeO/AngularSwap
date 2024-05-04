@@ -277,7 +277,8 @@
 @media screen and (max-width: 768px) {
     .swap-box {
         width: 96%;
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: auto;
     }        
     .swap-box-center-arrow {
        /*  position: relative; */
