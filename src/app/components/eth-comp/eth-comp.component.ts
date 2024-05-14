@@ -3,6 +3,7 @@ import { EthAuthService } from 'src/services/eth-auth.service';
 import { SwapService, TokenType } from 'src/services/swap.service';
 /* import { ModalService } from 'src/services/modal.service'; */
 import { FetchService } from 'src/services/fetch.service';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-eth-comp',
@@ -13,7 +14,7 @@ export class EthCompComponent implements OnInit {
   /*  */
 
   /*************** Variables y estados locales ***************/
-
+  isLoading: boolean = false; // Cuando se cambia a true, se muestran los spinners de loading en el botón que se esté renderizando
   loginUser: boolean = false;
   showModalComponent: boolean = false;
   isApproved: boolean = false;
@@ -34,7 +35,8 @@ export class EthCompComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private ethereumService: EthAuthService,
     private swapService: SwapService,
-    private fetchService: FetchService
+    private fetchService: FetchService,
+    private notificationService: NotificationService
   ) {
     this.tokenOne = {
       name: '',
@@ -58,21 +60,30 @@ export class EthCompComponent implements OnInit {
       this.cdr.detectChanges();
 
       if (res) {
-        await this.swapService.getTokenBalance(this.swapService.balanceTokenOne, this.swapService.tokenOne.getValue())
-        await this.swapService.getTokenBalance(this.swapService.balanceTokenTwo, this.swapService.tokenTwo.getValue())
+        await this.swapService.getTokenBalance(
+          this.swapService.balanceTokenOne,
+          this.swapService.tokenOne.getValue()
+        );
+        await this.swapService.getTokenBalance(
+          this.swapService.balanceTokenTwo,
+          this.swapService.tokenTwo.getValue()
+        );
       }
     });
 
     this.swapService.tokenOne.subscribe(async (token) => {
       this.tokenOne = token;
       if (this.loginUser) {
-        await this.swapService.getTokenBalance(this.swapService.balanceTokenOne, this.swapService.tokenOne.getValue())
+        await this.swapService.getTokenBalance(
+          this.swapService.balanceTokenOne,
+          this.swapService.tokenOne.getValue()
+        );
       }
 
       if (token.name === 'Matic') {
-        this.isApproved = true
+        this.isApproved = true;
       } else {
-        this.isApproved = false
+        this.isApproved = false;
       }
 
       this.updateAmountToReceive()
@@ -81,7 +92,10 @@ export class EthCompComponent implements OnInit {
     this.swapService.tokenTwo.subscribe(async (token) => {
       this.tokenTwo = token;
       if (this.loginUser) {
-        await this.swapService.getTokenBalance(this.swapService.balanceTokenTwo, this.swapService.tokenTwo.getValue())
+        await this.swapService.getTokenBalance(
+          this.swapService.balanceTokenTwo,
+          this.swapService.tokenTwo.getValue()
+        );
       }
 
       this.updateAmountToReceive()
@@ -126,12 +140,17 @@ export class EthCompComponent implements OnInit {
     this.showModalComponent = !this.showModalComponent;
   }
 
+  //closes the modal
+  handleCloseModalComponent() {
+    this.showModalComponent = !this.showModalComponent;
+  }
+
   // hace que los componentes de input suban o bajen al clickear el boton de la flecha en medio
   toggleSwap() {
     // this.isSwapped = !this.isSwapped;
 
-    let currentTokenOne: TokenType = this.tokenOne
-    let currentTokenTwo: TokenType = this.tokenTwo
+    let currentTokenOne: TokenType = this.tokenOne;
+    let currentTokenTwo: TokenType = this.tokenTwo;
 
     this.swapService.tokenOne.next(currentTokenTwo)
     this.swapService.tokenTwo.next(currentTokenOne)
@@ -162,54 +181,72 @@ export class EthCompComponent implements OnInit {
 
     if (!regex.test(newValue)) {
       this.input.nativeElement.value = this.topAmountOfTokensOldValue;
-      console.log('Valor inválido')
+      console.log('Valor inválido');
     } else {
-
       this.topAmountOfTokens = newValue;
       this.topAmountOfTokensOldValue = newValue;
-      console.log('Nuevo valor del input: ', newValue)
+      console.log('Nuevo valor del input: ', newValue);
 
-      this.swapService.amountIn.next(newValue)
-      console.log('Nuevo valor del servicio: ', this.swapService.amountIn.value)
+      this.swapService.amountIn.next(newValue);
+      console.log(
+        'Nuevo valor del servicio: ',
+        this.swapService.amountIn.value
+      );
 
       this.bottomAmountOfTokens = newValue * this.tokenTwoPrice
     }
   }
 
   async handleApprove() {
-    await this.swapService.approvePermitContract()
+    this.isLoading = true;
+    await this.swapService
+      .approvePermitContract()
       .then(async (tx) => {
-        await tx.wait()
-        alert('Aprobación completada exitosamente');
+        await tx.wait();
+        this.notificationService.showNotification('success', 'Aprobación exitosa.');
         this.isApproved = true;
+        this.isLoading = false;
       })
       .catch((error) => {
-        alert(`Ocurrió un error en la aprobación: ${error.reason}`);
+        this.notificationService.showNotification('error', `Ocurrió un error en la aprobación: ${error.reason}`);
+        this.isLoading = false;
       });
   }
 
   async handleSwap() {
-    await this.swapService.executeSwap()
+    this.isLoading = true;
+    await this.swapService
+      .executeSwap()
       .then(async (tx) => {
-        await tx.wait()
-        alert('Swap completado');
+        await tx.wait();
+        this.notificationService.showNotification('success', 'Swap exitoso.');
         this.isApproved = false;
+        this.isLoading = false;
       })
       .catch((error) => {
-        alert(`Ocurrió un error en el swap: ${error.reason}`);
+        this.notificationService.showNotification('error', `Ocurrió un error en el swap: ${error.reason}`);
+        this.isLoading = false;
       });
   }
 
   async handleSetMax() {
-    const tokenOneBalance = await this.swapService.getWeiTokenBalance()
-    this.topAmountOfTokens = tokenOneBalance
+    const tokenOneBalance = await this.swapService.getWeiTokenBalance();
+    this.topAmountOfTokens = tokenOneBalance;
     this.topAmountOfTokensOldValue = tokenOneBalance;
-    console.log('Nuevo valor del input: ', tokenOneBalance)
+    console.log('Nuevo valor del input: ', tokenOneBalance);
 
-    this.swapService.amountIn.next(tokenOneBalance)
-    console.log('Nuevo valor del servicio: ', this.swapService.amountIn.value)
+    this.swapService.amountIn.next(tokenOneBalance);
+    console.log('Nuevo valor del servicio: ', this.swapService.amountIn.value);
 
-    this.bottomAmountOfTokens = this.topAmountOfTokens * this.tokenTwoPrice
+    this.bottomAmountOfTokens = this.topAmountOfTokens * this.tokenTwoPrice;
+  }
+
+  /* Notificaciones */
+  triggerSuccess() {
+    this.notificationService.showNotification('success', 'Operación exitosa.');
+  }
+
+  triggerError() {
+    this.notificationService.showNotification('error', 'Ocurrió un error.');
   }
 }
-

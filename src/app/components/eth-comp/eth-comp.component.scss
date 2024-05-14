@@ -55,6 +55,8 @@
     }
 }
 
+
+
 .swap-box {
     gap: 8px;
     background-color: var(--background-color);
@@ -236,5 +238,53 @@
         bottom: 0;
         background: rgba(0, 0, 0, 0.6); // Fondo oscuro con opacidad
         z-index: -1; // Detrás del contenido del modal pero por encima de la interfaz
+    }
+}
+
+
+
+/* Spiner, loader en el botón */
+.spinner-border {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  vertical-align: text-bottom;
+  border: 0.25em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spinner-border .75s linear infinite;
+}
+
+@keyframes spinner-border {
+  to { transform: rotate(360deg); }
+}
+
+.sr-only {
+  border: 0;
+  clip: rect(0,0,0,0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+
+
+//media query para mobile responsive del swap-box que cambia solo el ancho del contendedor 
+
+@media screen and (max-width: 768px) {
+    .swap-box {
+        width: 96%;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }        
+    .swap-box-center-arrow {
+       /*  position: relative; */
+        width: 84dvw;
+    }
+    .swap-box-token-container{
+        width: 84dvw;
     }
 }

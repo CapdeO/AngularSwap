@@ -1,6 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { ethers } from 'ethers';
 import { BehaviorSubject } from 'rxjs';
+import { NotificationService } from './notification.service';
 
 declare let window: any;
 
@@ -14,7 +15,7 @@ export class EthAuthService {
   hainIds: string[] = ['137']
   loginUser: any = new BehaviorSubject<boolean>(false)
 
-  constructor(private ngZone: NgZone) {
+  constructor(private ngZone: NgZone, private notificationService: NotificationService) {
     if (typeof window.ethereum !== 'undefined') {
       this.provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
       this.signer.next(this.provider.getSigner());
@@ -41,11 +42,13 @@ export class EthAuthService {
 
     } else {
       console.error('MetaMask is not installed.');
+      this.notificationService.showNotification('error', 'Metamask no instalado.');
     }
   }
 
   private handleMetaMaskDisconnect() {
     console.log('MetaMask disconnected.');
+    this.notificationService.showNotification('success', 'Desconectado.');
     this.loginUser.next(false)
     this.provider = undefined;
     this.signer.next(undefined);
@@ -53,6 +56,7 @@ export class EthAuthService {
 
   private handleMetaMaskAccountsChanged(accounts: string[]) {
     console.log('MetaMask accounts changed:', accounts);
+    this.notificationService.showNotification('success', 'Cuenta cambiada con éxito.');
     this.provider = new ethers.providers.Web3Provider(window.ethereum);
     this.signer.next(this.provider.getSigner());
 
@@ -72,11 +76,13 @@ export class EthAuthService {
       this.loginUser.next(true)
 
       console.log('Connected to MetaMask with address:', address);
+      this.notificationService.showNotification('success', 'Conectado con éxito.');
 
       this.checkChainID()
 
     } else {
       console.error('MetaMask is not installed.');
+      this.notificationService.showNotification('error', 'Metamask no instalado.');
     }
   }
 
