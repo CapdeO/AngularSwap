@@ -222,6 +222,16 @@ export class EthCompComponent implements OnInit {
         this.notificationService.showNotification('success', 'Swap exitoso.');
         this.isApproved = false;
         this.isLoading = false;
+
+        await this.swapService.getTokenBalance(
+          this.swapService.balanceTokenOne,
+          this.swapService.tokenOne.getValue()
+        );
+
+        await this.swapService.getTokenBalance(
+          this.swapService.balanceTokenTwo,
+          this.swapService.tokenTwo.getValue()
+        );
       })
       .catch((error) => {
         this.notificationService.showNotification('error', `Ocurrió un error en el swap: ${error.reason}`);
