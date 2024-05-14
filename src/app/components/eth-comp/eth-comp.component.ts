@@ -25,7 +25,7 @@ export class EthCompComponent implements OnInit {
   tokenTwoBalance: number = 0;
   topAmountOfTokens: number = 1; // cantidad de tokens de la parte de arriba
   topAmountOfTokensOldValue: number = 1;
-  cresioPrice: any = 0;
+  tokenTwoPrice: any = 0;
   bottomAmountOfTokens: number = 0; // cantidad de tokens a recibir (de la parte de abajo)
   @ViewChild('input', { static: false }) input;
 
@@ -74,6 +74,8 @@ export class EthCompComponent implements OnInit {
       } else {
         this.isApproved = false
       }
+
+      this.updateAmountToReceive()
     });
 
     this.swapService.tokenTwo.subscribe(async (token) => {
@@ -81,6 +83,8 @@ export class EthCompComponent implements OnInit {
       if (this.loginUser) {
         await this.swapService.getTokenBalance(this.swapService.balanceTokenTwo, this.swapService.tokenTwo.getValue())
       }
+
+      this.updateAmountToReceive()
     });
 
     this.swapService.balanceTokenOne.subscribe((balance) => {
@@ -91,14 +95,25 @@ export class EthCompComponent implements OnInit {
       this.tokenTwoBalance = balance;
     });
 
-    this.fetchService.fetchPrices('0xc2132d05d31c914a87c6611c10748aeb04b58e8f', '0xFA3c05C2023918A4324fDE7163591Fe6BEBd1692').subscribe((data: any) => {
+    // this.fetchService.fetchPrices('0xc2132d05d31c914a87c6611c10748aeb04b58e8f', '0xFA3c05C2023918A4324fDE7163591Fe6BEBd1692').subscribe((data: any) => {
+    //   console.log(data)
+    //   this.tokenTwoPrice = data.tokenTwo
+    //   this.bottomAmountOfTokens = this.topAmountOfTokens / this.tokenTwoPrice
+    // },
+    //   (error: any) => {
+    //     console.log(error)
+    //   })
+  }
+
+  updateAmountToReceive() {
+    this.fetchService.fetchPrices(this.tokenOne.address, this.tokenTwo.address).subscribe((data: any) => {
       console.log(data)
-      this.cresioPrice = data.tokenTwo
-      this.bottomAmountOfTokens = this.topAmountOfTokens / this.cresioPrice
+      this.tokenTwoPrice = data.ratio
+      this.bottomAmountOfTokens = this.topAmountOfTokens * this.tokenTwoPrice
     },
-    (error: any) => {
-      console.log(error)
-    })
+      (error: any) => {
+        console.log(error)
+      })
   }
 
   async connectToMetaMask() {
@@ -120,6 +135,8 @@ export class EthCompComponent implements OnInit {
 
     this.swapService.tokenOne.next(currentTokenTwo)
     this.swapService.tokenTwo.next(currentTokenOne)
+
+    this.updateAmountToReceive()
   }
 
   /*   logPayAmount() {
@@ -155,7 +172,7 @@ export class EthCompComponent implements OnInit {
       this.swapService.amountIn.next(newValue)
       console.log('Nuevo valor del servicio: ', this.swapService.amountIn.value)
 
-      this.bottomAmountOfTokens = newValue / this.cresioPrice
+      this.bottomAmountOfTokens = newValue * this.tokenTwoPrice
     }
   }
 
@@ -192,7 +209,7 @@ export class EthCompComponent implements OnInit {
     this.swapService.amountIn.next(tokenOneBalance)
     console.log('Nuevo valor del servicio: ', this.swapService.amountIn.value)
 
-    this.bottomAmountOfTokens = this.topAmountOfTokens / this.cresioPrice
+    this.bottomAmountOfTokens = this.topAmountOfTokens * this.tokenTwoPrice
   }
 }
 

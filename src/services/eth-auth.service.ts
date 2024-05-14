@@ -16,7 +16,7 @@ export class EthAuthService {
 
   constructor(private ngZone: NgZone) {
     if (typeof window.ethereum !== 'undefined') {
-      this.provider = new ethers.providers.Web3Provider(window.ethereum);
+      this.provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
       this.signer.next(this.provider.getSigner());
 
       // Listen for changes in MetaMask accounts
@@ -31,6 +31,13 @@ export class EthAuthService {
           }
         });
       });
+
+      // window.ethereum.on('chainChanged', (chainId: string) => {
+      //   // this.checkChainID()
+      //   this.ngZone.run(() => {
+      //     this.checkChainID()
+      //   })
+      // })
 
     } else {
       console.error('MetaMask is not installed.');
@@ -48,6 +55,8 @@ export class EthAuthService {
     console.log('MetaMask accounts changed:', accounts);
     this.provider = new ethers.providers.Web3Provider(window.ethereum);
     this.signer.next(this.provider.getSigner());
+
+    this.checkChainID()
   }
 
   async connectToMetaMaskWallet() {
@@ -63,8 +72,24 @@ export class EthAuthService {
       this.loginUser.next(true)
 
       console.log('Connected to MetaMask with address:', address);
+
+      this.checkChainID()
+
     } else {
       console.error('MetaMask is not installed.');
+    }
+  }
+
+  async checkChainID() {
+    const { chainId } = await this.provider.getNetwork()
+
+    console.log(chainId)
+
+    if (chainId !== 137) {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x89' }],
+      });
     }
   }
 
