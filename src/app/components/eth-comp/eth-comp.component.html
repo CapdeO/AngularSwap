@@ -65,8 +65,7 @@
             </div>
         </div>
 
-<!-- (click)="connectToMetaMask()" -->
-        <button *ngIf="!loginUser"   (click)="triggerSuccess()" class="connect-wallet-button">
+        <button *ngIf="!loginUser"   (click)="connectToMetaMask()" class="connect-wallet-button">
              <span *ngIf="!isLoading">Conectar</span>
             <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         </button>

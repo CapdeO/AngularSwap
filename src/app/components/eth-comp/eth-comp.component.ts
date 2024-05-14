@@ -26,7 +26,7 @@ export class EthCompComponent implements OnInit {
   tokenTwoBalance: number = 0;
   topAmountOfTokens: number = 1; // cantidad de tokens de la parte de arriba
   topAmountOfTokensOldValue: number = 1;
-  cresioPrice: any = 0;
+  tokenTwoPrice: any = 0;
   bottomAmountOfTokens: number = 0; // cantidad de tokens a recibir (de la parte de abajo)
   @ViewChild('input', { static: false }) input;
 
@@ -85,6 +85,8 @@ export class EthCompComponent implements OnInit {
       } else {
         this.isApproved = false;
       }
+
+      this.updateAmountToReceive()
     });
 
     this.swapService.tokenTwo.subscribe(async (token) => {
@@ -95,6 +97,8 @@ export class EthCompComponent implements OnInit {
           this.swapService.tokenTwo.getValue()
         );
       }
+
+      this.updateAmountToReceive()
     });
 
     this.swapService.balanceTokenOne.subscribe((balance) => {
@@ -105,21 +109,25 @@ export class EthCompComponent implements OnInit {
       this.tokenTwoBalance = balance;
     });
 
-    this.fetchService
-      .fetchPrices(
-        '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
-        '0xFA3c05C2023918A4324fDE7163591Fe6BEBd1692'
-      )
-      .subscribe(
-        (data: any) => {
-          console.log(data);
-          this.cresioPrice = data.tokenTwo;
-          this.bottomAmountOfTokens = this.topAmountOfTokens / this.cresioPrice;
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      );
+    // this.fetchService.fetchPrices('0xc2132d05d31c914a87c6611c10748aeb04b58e8f', '0xFA3c05C2023918A4324fDE7163591Fe6BEBd1692').subscribe((data: any) => {
+    //   console.log(data)
+    //   this.tokenTwoPrice = data.tokenTwo
+    //   this.bottomAmountOfTokens = this.topAmountOfTokens / this.tokenTwoPrice
+    // },
+    //   (error: any) => {
+    //     console.log(error)
+    //   })
+  }
+
+  updateAmountToReceive() {
+    this.fetchService.fetchPrices(this.tokenOne.address, this.tokenTwo.address).subscribe((data: any) => {
+      console.log(data)
+      this.tokenTwoPrice = data.ratio
+      this.bottomAmountOfTokens = this.topAmountOfTokens * this.tokenTwoPrice
+    },
+      (error: any) => {
+        console.log(error)
+      })
   }
 
   async connectToMetaMask() {
@@ -144,8 +152,10 @@ export class EthCompComponent implements OnInit {
     let currentTokenOne: TokenType = this.tokenOne;
     let currentTokenTwo: TokenType = this.tokenTwo;
 
-    this.swapService.tokenOne.next(currentTokenTwo);
-    this.swapService.tokenTwo.next(currentTokenOne);
+    this.swapService.tokenOne.next(currentTokenTwo)
+    this.swapService.tokenTwo.next(currentTokenOne)
+
+    this.updateAmountToReceive()
   }
 
   /*   logPayAmount() {
@@ -183,33 +193,39 @@ export class EthCompComponent implements OnInit {
         this.swapService.amountIn.value
       );
 
-      this.bottomAmountOfTokens = newValue / this.cresioPrice;
+      this.bottomAmountOfTokens = newValue * this.tokenTwoPrice
     }
   }
 
   async handleApprove() {
+    this.isLoading = true;
     await this.swapService
       .approvePermitContract()
       .then(async (tx) => {
         await tx.wait();
-        alert('Aprobación completada exitosamente');
+        this.notificationService.showNotification('success', 'Aprobación exitosa.');
         this.isApproved = true;
+        this.isLoading = false;
       })
       .catch((error) => {
-        alert(`Ocurrió un error en la aprobación: ${error.reason}`);
+        this.notificationService.showNotification('error', `Ocurrió un error en la aprobación: ${error.reason}`);
+        this.isLoading = false;
       });
   }
 
   async handleSwap() {
+    this.isLoading = true;
     await this.swapService
       .executeSwap()
       .then(async (tx) => {
         await tx.wait();
-        alert('Swap completado');
+        this.notificationService.showNotification('success', 'Swap exitoso.');
         this.isApproved = false;
+        this.isLoading = false;
       })
       .catch((error) => {
-        alert(`Ocurrió un error en el swap: ${error.reason}`);
+        this.notificationService.showNotification('error', `Ocurrió un error en el swap: ${error.reason}`);
+        this.isLoading = false;
       });
   }
 
@@ -222,7 +238,7 @@ export class EthCompComponent implements OnInit {
     this.swapService.amountIn.next(tokenOneBalance);
     console.log('Nuevo valor del servicio: ', this.swapService.amountIn.value);
 
-    this.bottomAmountOfTokens = this.topAmountOfTokens / this.cresioPrice;
+    this.bottomAmountOfTokens = this.topAmountOfTokens * this.tokenTwoPrice;
   }
 
   /* Notificaciones */

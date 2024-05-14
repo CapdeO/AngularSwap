@@ -14,8 +14,8 @@ export class CoinListComponent {
       name: 'Matic',
       symbol: 'MATIC',
       logo: 'https://s3.coinmarketcap.com/static-gravity/image/b8db9a2ac5004c1685a39728cdf4e100.png',
-      address: '0x0000000000000000000000000000000000000000',
-      decimals: 18,
+      address: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
+      decimals: 18
     },
     {
       name: 'Tether USD',
